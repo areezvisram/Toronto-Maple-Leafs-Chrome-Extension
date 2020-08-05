@@ -245,3 +245,52 @@ html {
   border: 1px solid #4885ed;
   padding: 9px 19px;
 }
+
+.next-game-container {
+  display: block;
+  top: 0;
+  left: 0;
+  background-color: #00205b;
+  height: 300px;
+  width: 275px;
+  float: left;
+}
+
+.next-game-text {
+  font-family: "quantico";
+  color: #ffffff;
+  font-size: 30px;
+  margin-left: 35px;
+  text-decoration: underline;
+}
+
+.next-game-date {
+  font-family: "quantico";
+  color: #ffffff;
+  font-size: 20px;
+  margin-left: 15px;
+  margin-top: 3px;
+}
+
+.next-game-away {
+    font-family: "quantico";
+    color: #ffffff;
+    font-size: 20px;
+    margin-left: 12px;
+    margin-top: 7px;
+}
+
+.next-game-away-record {
+    font-family: "quantico";
+    color: #ffffff;
+    font-size: 20px;
+    margin-left: 90px;
+}
+
+.next-game-at {
+    font-family: "quantico";
+    color: #ffffff;
+    font-size: 20px;
+    margin-left: 110px;
+    margin-top: 8px;
+}

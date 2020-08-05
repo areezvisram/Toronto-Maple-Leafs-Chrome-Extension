@@ -24,6 +24,15 @@ window.addEventListener("load", function () {
     }
   }
 
-  setInterval(doDate, 1000);
+//   async function getNextGame() {
+//     const nextGameRequest = await fetch("https://statsapi.web.nhl.com/api/v1/teams/10?expand=team.schedule.next");
+//     let nextGameResponse = await nextGameRequest.json();
+//     let nextGameDate = nextGameResponse['teams'][0]['nextGameSchedule']['dates'][0]['date'];
+//     document.getElementById("next-game-date").innerHTML = "DATE: " + nextGameDate;
+//     console.log(nextGameResponse);
+//     let nextGameAway = nextGameResponse['teams'][0]['nextGameSchedule']['dates'][0]['games'][0]['teams']['away']['team']['name'];
+//   }
 
+  setInterval(doDate, 1000);
+//   getNextGame();
 });

@@ -251,7 +251,7 @@ html {
   top: 0;
   left: 0;
   background-color: #00205b;
-  height: 300px;
+  height: 350px;
   width: 275px;
   float: left;
 }
@@ -260,7 +260,7 @@ html {
   font-family: "quantico";
   color: #ffffff;
   font-size: 30px;
-  margin-left: 35px;
+  text-align: center;
   text-decoration: underline;
 }
 
@@ -268,7 +268,7 @@ html {
   font-family: "quantico";
   color: #ffffff;
   font-size: 20px;
-  margin-left: 15px;
+  text-align: center;
   margin-top: 3px;
 }
 
@@ -276,7 +276,7 @@ html {
     font-family: "quantico";
     color: #ffffff;
     font-size: 20px;
-    margin-left: 12px;
+    text-align: center;
     margin-top: 7px;
 }
 
@@ -284,13 +284,57 @@ html {
     font-family: "quantico";
     color: #ffffff;
     font-size: 20px;
-    margin-left: 90px;
+    text-align: center;
 }
 
 .next-game-at {
     font-family: "quantico";
     color: #ffffff;
     font-size: 20px;
-    margin-left: 110px;
+    text-align: center;
     margin-top: 8px;
+}
+
+.next-game-home {
+  font-family: "quantico";
+  color: #ffffff;
+  font-size: 20px;
+  text-align: center;
+  margin-top: 8px;
+}
+
+.next-game-home-record {
+  font-family: "quantico";
+  color: #ffffff;
+  font-size: 20px;
+  text-align: center;
+}
+
+.next-away-team-logo {
+  height: 80px;
+  width: 80px;
+  margin-left: 10px;
+  margin-top: 20px;
+  display: block;
+  float: left;
+} 
+
+.next-game-at-2 {
+  font-family: "quantico";
+  color: #ffffff;
+  font-size: 20px;
+  margin-left: 40px;
+  margin-top: 50px;
+  display: block;
+  float: left;
+  text-align: center;
+}
+
+.next-home-team-logo {
+  height: 80px;
+  width: 80px;
+  margin-top: 20px;
+  margin-right: 10px;
+  display: block;
+  float: right;
 }

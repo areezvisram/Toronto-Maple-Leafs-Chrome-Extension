@@ -7,16 +7,16 @@
 <body>
   <div class="bg">
     <div class="next-game-container">
-        <div class="next-game-text">NEXT GAME</div>
-        <div class="next-game-date" id="next-game-date"></div>
-        <div class="next-game-away" id="next-game-away"></div>
-        <div class="next-game-away-record" id="next-game-away-record"></div>
-        <div class="next-game-at">@</div>
-        <div class="next-game-home" id="next-game-home"></div>
-        <div class="next-game-home-record" id="next-game-home-record"></div>
-        <img class="next-away-team-logo" id="next-away-team-logo">
-        <div class="next-game-at-2">@</div>
-        <img class="next-home-team-logo" id="next-home-team-logo">
+      <div class="next-game-text">NEXT GAME</div>
+      <div class="next-game-date" id="next-game-date"></div>
+      <div class="next-game-away" id="next-game-away"></div>
+      <div class="next-game-away-record" id="next-game-away-record"></div>
+      <div class="next-game-at">@</div>
+      <div class="next-game-home" id="next-game-home"></div>
+      <div class="next-game-home-record" id="next-game-home-record"></div>
+      <img class="next-away-team-logo" id="next-away-team-logo" />
+      <div class="next-game-at-2">@</div>
+      <img class="next-home-team-logo" id="next-home-team-logo" />
     </div>
     <div class="clock-container">
       <div class="home">HOME</div>
@@ -42,6 +42,22 @@
       <div class="day-text">DAY</div>
     </div>
 
+    <div class="last-game-container">
+      <div class="last-game-text">LAST GAME</div>
+      <div class="last-game-date" id="last-game-date"></div>
+      <div class="last-game-away" id="last-game-away"></div>
+      <div class="last-game-away-record" id="last-game-away-record"></div>
+      <div class="last-game-at">@</div>
+      <div class="last-game-home" id="last-game-home"></div>
+      <div class="last-game-home-record" id="last-game-home-record"></div>
+      <div class="last-game-score">FINAL SCORE:</div>
+      <div class="last-game-away-score" id="last-game-away-score"></div>
+      <div class="last-game-home-score" id="last-game-home-score"></div>
+      <img class="last-away-team-logo" id="last-away-team-logo" />
+      <div class="last-game-at-2">@</div>
+      <img class="last-home-team-logo" id="last-home-team-logo" />
+    </div>
+
     <div class="google-search-container">
       <div class="google-logo">
         <img
@@ -49,13 +65,17 @@
           src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
         />
       </div>
-      <form method="get" action="http://www.google.com" target="_blank" >
-        <input class="bar" type="text" title="Search" name="q" size="25" maxlength="255"/>
+      <form method="get" action="http://www.google.com" target="_blank">
+        <input
+          class="bar"
+          type="text"
+          title="Search"
+          name="q"
+          size="25"
+          maxlength="255"
+        />
         <button class="button" type="submit">Google Search</button>
       </form>
     </div>
-
-
   </div>
 </body>
-

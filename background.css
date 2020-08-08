@@ -338,3 +338,112 @@ html {
   display: block;
   float: right;
 }
+
+.last-game-container {
+  display: block;
+  background-color: #00205b;
+  height: 350px;
+  width: 275px;
+  float: right;
+  margin-top: -305px;
+}
+
+.last-game-text {
+  font-family: "quantico";
+  color: #ffffff;
+  font-size: 30px;
+  text-align: center;
+  text-decoration: underline;
+}
+
+.last-game-date {
+  font-family: "quantico";
+  color: #ffffff;
+  font-size: 20px;
+  text-align: center;
+}
+
+.last-game-away {
+    font-family: "quantico";
+    color: #ffffff;
+    font-size: 20px;
+    text-align: center;
+}
+
+.last-game-away-record {
+    font-family: "quantico";
+    color: #ffffff;
+    font-size: 20px;
+    text-align: center;
+}
+
+.last-game-at {
+    font-family: "quantico";
+    color: #ffffff;
+    font-size: 20px;
+    text-align: center;
+}
+
+.last-game-home {
+  font-family: "quantico";
+  color: #ffffff;
+  font-size: 20px;
+  text-align: center;
+}
+
+.last-game-home-record {
+  font-family: "quantico";
+  color: #ffffff;
+  font-size: 20px;
+  text-align: center;
+}
+
+.last-away-team-logo {
+  height: 75px;
+  width: 75px;
+  margin-left: 18px;
+  display: block;
+  float: left;
+} 
+
+.last-game-at-2 {
+  font-family: "quantico";
+  color: #ffffff;
+  font-size: 20px;
+  margin-left: 40px;
+  margin-top: 30px;
+  display: block;
+  float: left;
+  text-align: center;
+}
+
+.last-home-team-logo {
+  height: 75px;
+  width: 75px;
+  margin-right: 18px;
+  display: block;
+  float: right;
+}
+
+.last-game-score {
+  font-family: "quantico";
+  color: #ffffff;
+  font-size: 20px;
+  text-align: center;
+}
+
+.last-game-away-score {
+  font-family: "quantico";
+  color: #ffffff;
+  font-size: 20px;
+  margin-left: 50px;
+}
+
+.last-game-home-score {
+  font-family: "quantico";
+  color: #ffffff;
+  font-size: 20px;
+  float: right;
+  margin-top: -25px;
+  margin-right: 50px;
+}

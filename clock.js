@@ -58,6 +58,48 @@ window.addEventListener("load", function () {
     document.getElementById("next-home-team-logo").src = nextGameHomeLogoSrc;
   }
 
+  async function getLastGame() {
+    const lastGameRequest = await fetch("https://statsapi.web.nhl.com/api/v1/teams/10?expand=team.schedule.previous");
+    let lastGameResponse = await lastGameRequest.json();
+    console.log(lastGameResponse);
+
+    let lastGameDate = lastGameResponse["teams"][0]['previousGameSchedule']['dates'][0]['date'];
+    document.getElementById("last-game-date").innerHTML = "DATE: " + lastGameDate;
+
+    let lastGameAway = lastGameResponse["teams"][0]["previousGameSchedule"]['dates'][0]['games'][0]['teams']['away']['team']['name'];
+    document.getElementById("last-game-away").innerHTML = lastGameAway;
+
+    let lastGameAwayWins = lastGameResponse["teams"][0]["previousGameSchedule"]['dates'][0]['games'][0]['teams']['away']['leagueRecord']['wins'];
+    let lastGameAwayLosses = lastGameResponse["teams"][0]["previousGameSchedule"]['dates'][0]['games'][0]['teams']['away']['leagueRecord']['losses'];
+    let lastGameAwayOT = lastGameResponse["teams"][0]["previousGameSchedule"]['dates'][0]['games'][0]['teams']['away']['leagueRecord']['ot'];
+    let lastGameAwayRecord = lastGameAwayWins + "-" + lastGameAwayLosses + '-' + lastGameAwayOT;
+    document.getElementById("last-game-away-record").innerHTML = lastGameAwayRecord;
+
+    let lastGameHomeWins = lastGameResponse["teams"][0]["previousGameSchedule"]['dates'][0]['games'][0]['teams']['home']['leagueRecord']['wins'];
+    let lastGameHomeLosses = lastGameResponse["teams"][0]["previousGameSchedule"]['dates'][0]['games'][0]['teams']['home']['leagueRecord']['losses'];
+    let lastGameHomeOT = lastGameResponse["teams"][0]["previousGameSchedule"]['dates'][0]['games'][0]['teams']['home']['leagueRecord']['ot'];
+    let lastGameHomeRecord = lastGameHomeWins + "-" + lastGameHomeLosses + '-' + lastGameHomeOT;
+    document.getElementById("last-game-home-record").innerHTML = lastGameHomeRecord;
+
+    let lastGameHome = lastGameResponse["teams"][0]["previousGameSchedule"]['dates'][0]['games'][0]['teams']['home']['team']['name'];
+    document.getElementById("last-game-home").innerHTML = lastGameHome;
+
+    let lastGameAwayScore = lastGameResponse["teams"][0]["previousGameSchedule"]['dates'][0]['games'][0]['teams']['away']['score'];
+    document.getElementById("last-game-away-score").innerHTML = lastGameAwayScore;
+
+    let lastGameHomeScore = lastGameResponse["teams"][0]["previousGameSchedule"]['dates'][0]['games'][0]['teams']['home']['score'];
+    document.getElementById("last-game-home-score").innerHTML = lastGameHomeScore;
+
+    let lastGameAwayLogoSrc = "images/teams/" +  lastGameAway + ".png";
+    document.getElementById("last-away-team-logo").src = lastGameAwayLogoSrc;
+
+    let lastGameHomeLogoSrc = "images/teams/" +  lastGameHome + ".png";
+    document.getElementById("last-home-team-logo").src = lastGameHomeLogoSrc;
+  }
+
+
+
   setInterval(doDate, 1000);
-  getNextGame();
+  //getLastGame();
+  //getNextGame();
 });

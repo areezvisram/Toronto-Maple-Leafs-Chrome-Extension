@@ -1,3 +1,22 @@
+class Player {
+  constructor(
+    playerName,
+    gamesPlayed,
+    goals,
+    assists,
+    points,
+    //position
+  ) {
+    this.playerName = playerName;
+    // this.position = position;
+    this.gamesPlayed = gamesPlayed;
+    this.goals = goals;
+    this.assists = assists;
+    this.points = points;
+  }
+}
+
+
 window.addEventListener("load", function () {
   function doDate() {
     var now = new Date();
@@ -32,30 +51,39 @@ window.addEventListener("load", function () {
   async function getNextGame() {
     const nextGameRequest = await fetch("https://statsapi.web.nhl.com/api/v1/teams/10?expand=team.schedule.next");
     let nextGameResponse = await nextGameRequest.json();
-    let nextGameDate = nextGameResponse['teams'][0]['nextGameSchedule']['dates'][0]['date'];
-    document.getElementById("next-game-date").innerHTML = "DATE: " + nextGameDate;
-    console.log(nextGameResponse);
-    let nextGameAway = nextGameResponse['teams'][0]['nextGameSchedule']['dates'][0]['games'][0]['teams']['away']['team']['name'];
-    document.getElementById("next-game-away").innerHTML = nextGameAway.toUpperCase();
-    let nextGameAwayWins = nextGameResponse['teams'][0]['nextGameSchedule']['dates'][0]['games'][0]['teams']['away']['leagueRecord']['wins'];
-    let nextGameAwayLosses = nextGameResponse['teams'][0]['nextGameSchedule']['dates'][0]['games'][0]['teams']['away']['leagueRecord']['losses'];
-    let nextGameAwayOT = nextGameResponse['teams'][0]['nextGameSchedule']['dates'][0]['games'][0]['teams']['away']['leagueRecord']['ot'];
-    let nextGameAwayRecord = nextGameAwayWins + "-" + nextGameAwayLosses + "-" + nextGameAwayOT;
-    document.getElementById("next-game-away-record").innerHTML = nextGameAwayRecord;
+    let nextGameExists = true;
+    try {
+      let nextGameDate = nextGameResponse['teams'][0]['nextGameSchedule']['dates'][0]['date'];
+      document.getElementById("next-game-date").innerHTML = "DATE: " + nextGameDate;
+      console.log(nextGameResponse);
+      let nextGameAway = nextGameResponse['teams'][0]['nextGameSchedule']['dates'][0]['games'][0]['teams']['away']['team']['name'];
+      document.getElementById("next-game-away").innerHTML = nextGameAway.toUpperCase();
+      let nextGameAwayWins = nextGameResponse['teams'][0]['nextGameSchedule']['dates'][0]['games'][0]['teams']['away']['leagueRecord']['wins'];
+      let nextGameAwayLosses = nextGameResponse['teams'][0]['nextGameSchedule']['dates'][0]['games'][0]['teams']['away']['leagueRecord']['losses'];
+      let nextGameAwayOT = nextGameResponse['teams'][0]['nextGameSchedule']['dates'][0]['games'][0]['teams']['away']['leagueRecord']['ot'];
+      let nextGameAwayRecord = nextGameAwayWins + "-" + nextGameAwayLosses + "-" + nextGameAwayOT;
+      document.getElementById("next-game-away-record").innerHTML = nextGameAwayRecord;
 
-    let nextGameHome = nextGameResponse['teams'][0]['nextGameSchedule']['dates'][0]['games'][0]['teams']['home']['team']['name'];
-    document.getElementById("next-game-home").innerHTML = nextGameHome.toUpperCase();
-    let nextGameHomeWins = nextGameResponse['teams'][0]['nextGameSchedule']['dates'][0]['games'][0]['teams']['home']['leagueRecord']['wins'];
-    let nextGameHomeLosses = nextGameResponse['teams'][0]['nextGameSchedule']['dates'][0]['games'][0]['teams']['home']['leagueRecord']['losses'];
-    let nextGameHomeOT = nextGameResponse['teams'][0]['nextGameSchedule']['dates'][0]['games'][0]['teams']['home']['leagueRecord']['ot'];
-    let nextGameHomeRecord = nextGameHomeWins + "-" + nextGameHomeLosses + "-" + nextGameHomeOT;
-    document.getElementById("next-game-home-record").innerHTML = nextGameHomeRecord;
+      let nextGameHome = nextGameResponse['teams'][0]['nextGameSchedule']['dates'][0]['games'][0]['teams']['home']['team']['name'];
+      document.getElementById("next-game-home").innerHTML = nextGameHome.toUpperCase();
+      let nextGameHomeWins = nextGameResponse['teams'][0]['nextGameSchedule']['dates'][0]['games'][0]['teams']['home']['leagueRecord']['wins'];
+      let nextGameHomeLosses = nextGameResponse['teams'][0]['nextGameSchedule']['dates'][0]['games'][0]['teams']['home']['leagueRecord']['losses'];
+      let nextGameHomeOT = nextGameResponse['teams'][0]['nextGameSchedule']['dates'][0]['games'][0]['teams']['home']['leagueRecord']['ot'];
+      let nextGameHomeRecord = nextGameHomeWins + "-" + nextGameHomeLosses + "-" + nextGameHomeOT;
+      document.getElementById("next-game-home-record").innerHTML = nextGameHomeRecord;
 
-    let nextGameAwayLogoSrc = "images/teams/" +  nextGameAway + ".png";
-    document.getElementById("next-away-team-logo").src = nextGameAwayLogoSrc;
+      let nextGameAwayLogoSrc = "images/teams/" +  nextGameAway + ".png";
+      document.getElementById("next-away-team-logo").src = nextGameAwayLogoSrc;
 
-    let nextGameHomeLogoSrc = "images/teams/" +  nextGameHome + ".png";
-    document.getElementById("next-home-team-logo").src = nextGameHomeLogoSrc;
+      let nextGameHomeLogoSrc = "images/teams/" +  nextGameHome + ".png";
+      document.getElementById("next-home-team-logo").src = nextGameHomeLogoSrc;
+    } catch(error) {
+      nextGameExists = false;
+    }
+    if(nextGameExists == false) {
+      document.getElementById("next-game").style.display = "none";
+      document.getElementById("season-over").style.display = "block";
+    }
   }
 
   async function getLastGame() {
@@ -67,7 +95,7 @@ window.addEventListener("load", function () {
     document.getElementById("last-game-date").innerHTML = "DATE: " + lastGameDate;
 
     let lastGameAway = lastGameResponse["teams"][0]["previousGameSchedule"]['dates'][0]['games'][0]['teams']['away']['team']['name'];
-    document.getElementById("last-game-away").innerHTML = lastGameAway;
+    document.getElementById("last-game-away").innerHTML = lastGameAway.toUpperCase();
 
     let lastGameAwayWins = lastGameResponse["teams"][0]["previousGameSchedule"]['dates'][0]['games'][0]['teams']['away']['leagueRecord']['wins'];
     let lastGameAwayLosses = lastGameResponse["teams"][0]["previousGameSchedule"]['dates'][0]['games'][0]['teams']['away']['leagueRecord']['losses'];
@@ -82,7 +110,7 @@ window.addEventListener("load", function () {
     document.getElementById("last-game-home-record").innerHTML = lastGameHomeRecord;
 
     let lastGameHome = lastGameResponse["teams"][0]["previousGameSchedule"]['dates'][0]['games'][0]['teams']['home']['team']['name'];
-    document.getElementById("last-game-home").innerHTML = lastGameHome;
+    document.getElementById("last-game-home").innerHTML = lastGameHome.toUpperCase();
 
     let lastGameAwayScore = lastGameResponse["teams"][0]["previousGameSchedule"]['dates'][0]['games'][0]['teams']['away']['score'];
     document.getElementById("last-game-away-score").innerHTML = lastGameAwayScore;
@@ -97,8 +125,58 @@ window.addEventListener("load", function () {
     document.getElementById("last-home-team-logo").src = lastGameHomeLogoSrc;
   }
 
+  document.getElementById("dropdown-button").onclick = function() {
+    document.getElementById("dropdown-content").style.display = "block";
+  }
+
+  let playerArray = [];
+  async function getTopScorers() {
+    const leafsRosterRequest = await fetch("https://statsapi.web.nhl.com/api/v1/teams/10/roster");
+    let leafsRosterResponse = await leafsRosterRequest.json();
+    
+    let leafsRoster = leafsRosterResponse['roster'];
+    for(let i = 0; i < leafsRoster.length; i++) {
+      let playerLink = leafsRoster[i]['person']['link'];
+      let playerName = leafsRoster[i]['person']['fullName'];
+
+      let playerStatsRequest = await fetch ('https://statsapi.web.nhl.com/' + playerLink + '/stats?stats=statsSingleSeasonPlayoffs&season=20192020');
+      let playerStatsResponse = await playerStatsRequest.json();
+
+      try {
+        playerStats = playerStatsResponse["stats"][0]["splits"][0]["stat"];
+      } catch(error) {
+        playerStats = -1
+      } finally {
+        if(playerStats != -1) {
+          const stats = Object.keys(playerStats);
+          if(stats[1] == "assists") {
+            let gamesPlayed = playerStats["games"];
+            let goals = playerStats["goals"];
+            let assists = playerStats["assists"];
+            let points = playerStats["points"];
+            let p = new Player(
+              playerName,
+              gamesPlayed,
+              goals,
+              assists,
+              points
+            );
+            playerArray.push(p);
+          }
+          }
+        }
+      }
+  }
+  console.log(playerArray);
+
+  window.onclick = function(event) {
+    if(!event.target.matches(".dropdown-button")) {
+      document.getElementById("dropdown-content").style.display = "none";
+    }
+  }
 
 
+  getTopScorers();
   setInterval(doDate, 1000);
   //getLastGame();
   //getNextGame();

@@ -447,3 +447,106 @@ html {
   margin-top: -25px;
   margin-right: 50px;
 }
+
+.top-scorers-container {
+  display: block;
+  bottom: 0;
+  left: 0;
+  background-color: #00205b;
+  height: 317px;
+  width: 275px;
+  float: left;
+}
+
+.top-scorers-text {
+  font-family: "quantico";
+  color: #ffffff;
+  font-size: 30px;
+  text-align: center;
+  text-decoration: underline;
+}
+
+.filter-by {
+  font-family: "quantico";
+  color: #ffffff;
+  font-size: 20px;
+  margin-left: 5px;
+}
+
+.dropdown {
+  display: block;
+  float: right;
+  margin-top: -23px;
+  margin-right: 15px;
+}
+
+.dropdown-button {
+  width: 8rem;
+  background-color: #00205b;
+  font-family: "quantico";
+  color: #ffffff;
+  outline-style: solid;
+  outline-width: 1px;
+  outline-color: #ffffff;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #00205b;
+  min-width: 130px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  max-height: 100px;
+  overflow: scroll;
+}
+
+.dropdown-content a {
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  font-family: "quantico";
+}
+
+.top-scorers {
+  font-family: "quantico";
+  font-size: 20px;
+  color: #ffffff;
+  margin-left: 5px;
+  margin-top: 10px;
+}
+
+
+.standings-container {
+  display: block;
+  background-color: #00205b;
+  height: 317px;
+  width: 275px;
+  float: right;
+  bottom: 0;
+  right: 0;
+}
+
+.season-over-container {
+  display: none;
+}
+
+.season-over-words {
+  font-family: "quantico";
+  font-size: 30px;
+  color: #ffffff;
+  text-align: center;
+  margin-top: 15px;
+}
+
+.season-over-logo {
+  text-align: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: 120px;
+  width: 120px;
+}

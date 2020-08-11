@@ -509,6 +509,7 @@ html {
   text-decoration: none;
   display: block;
   font-family: "quantico";
+  cursor: pointer;
 }
 
 .top-scorers {

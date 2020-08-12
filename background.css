@@ -273,26 +273,26 @@ html {
 }
 
 .next-game-away {
-    font-family: "quantico";
-    color: #ffffff;
-    font-size: 20px;
-    text-align: center;
-    margin-top: 7px;
+  font-family: "quantico";
+  color: #ffffff;
+  font-size: 20px;
+  text-align: center;
+  margin-top: 7px;
 }
 
 .next-game-away-record {
-    font-family: "quantico";
-    color: #ffffff;
-    font-size: 20px;
-    text-align: center;
+  font-family: "quantico";
+  color: #ffffff;
+  font-size: 20px;
+  text-align: center;
 }
 
 .next-game-at {
-    font-family: "quantico";
-    color: #ffffff;
-    font-size: 20px;
-    text-align: center;
-    margin-top: 8px;
+  font-family: "quantico";
+  color: #ffffff;
+  font-size: 20px;
+  text-align: center;
+  margin-top: 8px;
 }
 
 .next-game-home {
@@ -317,7 +317,7 @@ html {
   margin-top: 20px;
   display: block;
   float: left;
-} 
+}
 
 .next-game-at-2 {
   font-family: "quantico";
@@ -364,24 +364,24 @@ html {
 }
 
 .last-game-away {
-    font-family: "quantico";
-    color: #ffffff;
-    font-size: 20px;
-    text-align: center;
+  font-family: "quantico";
+  color: #ffffff;
+  font-size: 20px;
+  text-align: center;
 }
 
 .last-game-away-record {
-    font-family: "quantico";
-    color: #ffffff;
-    font-size: 20px;
-    text-align: center;
+  font-family: "quantico";
+  color: #ffffff;
+  font-size: 20px;
+  text-align: center;
 }
 
 .last-game-at {
-    font-family: "quantico";
-    color: #ffffff;
-    font-size: 20px;
-    text-align: center;
+  font-family: "quantico";
+  color: #ffffff;
+  font-size: 20px;
+  text-align: center;
 }
 
 .last-game-home {
@@ -404,7 +404,7 @@ html {
   margin-left: 18px;
   display: block;
   float: left;
-} 
+}
 
 .last-game-at-2 {
   font-family: "quantico";
@@ -520,7 +520,6 @@ html {
   margin-top: 10px;
 }
 
-
 .standings-container {
   display: block;
   background-color: #00205b;
@@ -529,6 +528,40 @@ html {
   float: right;
   bottom: 0;
   right: 0;
+  overflow-y: scroll;
+}
+
+.standings-text {
+  font-family: "quantico";
+  color: #ffffff;
+  font-size: 30px;
+  text-align: center;
+  text-decoration: underline;
+}
+
+.standings-position {
+  font-family: "quantico";
+  font-size: 28px;
+  color: #ffffff;
+  float: left;
+  margin-top: 10px;
+  margin-left: 8%;
+}
+.standings-logo {
+  height: 45px;
+  width: 45px;
+  display: block;
+  margin-left: 60px;
+  margin-top: 8px;
+}
+
+.standings-points {
+  font-family: "quantico";
+  font-size: 28px;
+  color: #ffffff;
+  float: right;
+  margin-top: -45px;
+  margin-right: 5%;
 }
 
 .season-over-container {

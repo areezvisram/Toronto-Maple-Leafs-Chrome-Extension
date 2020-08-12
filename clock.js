@@ -216,10 +216,6 @@ window.addEventListener("load", function () {
     document.getElementById("last-home-team-logo").src = lastGameHomeLogoSrc;
   }
 
-  document.getElementById("dropdown-button").onclick = function () {
-    document.getElementById("dropdown-content").style.display = "block";
-  };
-
   let playerArray = [];
   async function getTopScorers(stat, position) {
     let top = [];
@@ -336,9 +332,77 @@ window.addEventListener("load", function () {
     }
   }
 
+  async function getStandings(filter) {
+    if (filter == "division") {
+      const divisionStandingsRequest = await fetch(
+        "https://statsapi.web.nhl.com/api/v1/standings"
+      );
+      let divisionStandingsResponse = await divisionStandingsRequest.json();
+      let divisionStandingsArray =
+        divisionStandingsResponse["records"][1]["teamRecords"];
+      var container = document.getElementById("standings-container");
+      for (let i = 0; i < divisionStandingsArray.length; i++) {
+        var teamLogo = document.createElement("img");
+        teamLogo.className = "standings-logo";
+        let teamName = divisionStandingsArray[i]["team"]["name"];
+        teamLogo.src = "images/teams/" + teamName + ".png";
+        var teamPoints = document.createElement("div");
+        teamPoints.className = "standings-points";
+        teamPoints.innerHTML =
+          "- " + divisionStandingsArray[i]["points"] + " PTS";
+
+        var teamPosition = document.createElement("div");
+        teamPosition.className = "standings-position";
+        let position = (i + 1).toString();
+        teamPosition.innerHTML = position + ". ";
+        container.appendChild(teamPosition);
+        container.appendChild(teamLogo);
+        container.appendChild(teamPoints);
+      }
+    } else if (filter == "conf") {
+      const confStandingsRequest = await fetch(
+        "https://statsapi.web.nhl.com/api/v1/standings/byConference"
+      );
+      let confStandingsResponse = await confStandingsRequest.json();
+      let confStandingsArray =
+        confStandingsResponse["records"][0]["teamRecords"];
+      var container = document.getElementById("standings-container");
+      for (let i = 0; i < confStandingsArray.length; i++) {
+        var teamLogo = document.createElement("img");
+        teamLogo.className = "standings-logo";
+        let teamName = confStandingsArray[i]["team"]["name"];
+        teamLogo.src = "images/teams/" + teamName + ".png";
+        var teamPoints = document.createElement("div");
+        teamPoints.className = "standings-points";
+        teamPoints.innerHTML = "- " + confStandingsArray[i]["points"] + " PTS";
+
+        var teamPosition = document.createElement("div");
+        teamPosition.className = "standings-position";
+        let position = (i + 1).toString();
+        teamPosition.innerHTML = position + ". ";
+        container.appendChild(teamPosition);
+        container.appendChild(teamLogo);
+        container.appendChild(teamPoints);
+      }
+    }
+  }
+
+  document.getElementById("dropdown-button").onclick = function () {
+    document.getElementById("dropdown-content").style.display = "block";
+  };
+
+  document.getElementById("standings-dropdown-button").onclick = function () {
+    document.getElementById("standings-dropdown-content").style.display =
+      "block";
+  };
+
   window.onclick = function (event) {
     if (!event.target.matches(".dropdown-button")) {
       document.getElementById("dropdown-content").style.display = "none";
+    }
+    if (!event.target.matches("#standings-dropdown-button")) {
+      document.getElementById("standings-dropdown-content").style.display =
+        "none";
     }
   };
 
@@ -372,8 +436,23 @@ window.addEventListener("load", function () {
     document.getElementById("dropdown-button").innerHTML = "GOALIE WINS &#9660";
   };
 
-  getTopScorers("points");
+  let division = document.getElementById("division");
+  division.onclick = function () {
+    getStandings("division");
+    document.getElementById("standings-dropdown-button").innerHTML =
+      "DIVISION &#9660";
+  };
+
+  let conf = document.getElementById("conference");
+  conf.onclick = function () {
+    getStandings("conf");
+    document.getElementById("standings-dropdown-button").innerHTML =
+      "CONFERENCE &#9660";
+  };
+
+  //getTopScorers("points");
   setInterval(doDate, 1000);
   //getLastGame();
   //getNextGame();
+  getStandings("division");
 });

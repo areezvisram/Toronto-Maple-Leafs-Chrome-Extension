@@ -1,11 +1,9 @@
 {
-    "manifest_version": 2,
-    "name": "Toronto Maple Leafs Chrome Extension",
-    "version": "0.1.0",
-    "chrome_url_overrides": {
-        "newtab": "background.html"
-    },
-    "permissions": [
-        "bookmarks"
-    ]
+  "manifest_version": 2,
+  "name": "Toronto Maple Leafs Chrome Extension",
+  "version": "1.0.0",
+  "chrome_url_overrides": {
+    "newtab": "background.html"
+  },
+  "permissions": ["bookmarks"]
 }

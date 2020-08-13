@@ -333,6 +333,15 @@ window.addEventListener("load", function () {
   }
 
   async function getStandings(filter) {
+    var allPositions = document.getElementsByClassName("standings-position");
+    var allLogos = document.getElementsByClassName("standings-logo");
+    var allPoints = document.getElementsByClassName("standings-points");
+    var container = document.getElementById("standings-container");
+    while (allPositions[0]) {
+      allPositions[0].parentNode.removeChild(allPositions[0]);
+      allLogos[0].parentNode.removeChild(allLogos[0]);
+      allPoints[0].parentNode.removeChild(allPoints[0]);
+    }
     if (filter == "division") {
       const divisionStandingsRequest = await fetch(
         "https://statsapi.web.nhl.com/api/v1/standings"
@@ -375,6 +384,32 @@ window.addEventListener("load", function () {
         var teamPoints = document.createElement("div");
         teamPoints.className = "standings-points";
         teamPoints.innerHTML = "- " + confStandingsArray[i]["points"] + " PTS";
+
+        var teamPosition = document.createElement("div");
+        teamPosition.className = "standings-position";
+        let position = (i + 1).toString();
+        teamPosition.innerHTML = position + ". ";
+        container.appendChild(teamPosition);
+        container.appendChild(teamLogo);
+        container.appendChild(teamPoints);
+      }
+    } else if (filter == "league") {
+      const leagueStandingsRequest = await fetch(
+        "https://statsapi.web.nhl.com/api/v1/standings/byLeague"
+      );
+      let leagueStandingsResponse = await leagueStandingsRequest.json();
+      let leagueStandingsArray =
+        leagueStandingsResponse["records"][0]["teamRecords"];
+      var container = document.getElementById("standings-container");
+      for (let i = 0; i < leagueStandingsArray.length; i++) {
+        var teamLogo = document.createElement("img");
+        teamLogo.className = "standings-logo";
+        let teamName = leagueStandingsArray[i]["team"]["name"];
+        teamLogo.src = "images/teams/" + teamName + ".png";
+        var teamPoints = document.createElement("div");
+        teamPoints.className = "standings-points";
+        teamPoints.innerHTML =
+          "- " + leagueStandingsArray[i]["points"] + " PTS";
 
         var teamPosition = document.createElement("div");
         teamPosition.className = "standings-position";
@@ -448,6 +483,13 @@ window.addEventListener("load", function () {
     getStandings("conf");
     document.getElementById("standings-dropdown-button").innerHTML =
       "CONFERENCE &#9660";
+  };
+
+  let league = document.getElementById("league");
+  league.onclick = function () {
+    getStandings("league");
+    document.getElementById("standings-dropdown-button").innerHTML =
+      "LEAGUE &#9660";
   };
 
   //getTopScorers("points");

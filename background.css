@@ -32,7 +32,7 @@ html {
 .clock-container {
   width: 600px;
   height: 300px;
-  margin-left: 32%;
+  margin-left: 26%;
   background-color: #00205b;
   border: 1px solid white;
 }
@@ -251,8 +251,8 @@ html {
   top: 0;
   left: 0;
   background-color: #00205b;
-  height: 350px;
-  width: 275px;
+  height: 385px;
+  width: 20%;
   float: left;
 }
 
@@ -342,8 +342,8 @@ html {
 .last-game-container {
   display: block;
   background-color: #00205b;
-  height: 350px;
-  width: 275px;
+  height: 385px;
+  width: 20%;
   float: right;
   margin-top: -305px;
 }
@@ -454,7 +454,7 @@ html {
   left: 0;
   background-color: #00205b;
   height: 317px;
-  width: 275px;
+  width: 22%;
   float: left;
 }
 
@@ -524,7 +524,7 @@ html {
   display: block;
   background-color: #00205b;
   height: 317px;
-  width: 275px;
+  width: 22%;
   float: right;
   bottom: 0;
   right: 0;

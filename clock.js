@@ -492,9 +492,9 @@ window.addEventListener("load", function () {
       "LEAGUE &#9660";
   };
 
-  //getTopScorers("points");
+  getTopScorers("points");
   setInterval(doDate, 1000);
-  //getLastGame();
-  //getNextGame();
+  getLastGame();
+  getNextGame();
   getStandings("division");
 });

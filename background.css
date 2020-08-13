@@ -1,6 +1,5 @@
 body,
 html {
-  height: 100%;
   margin: 0;
 }
 
@@ -16,10 +15,11 @@ html {
 
 .bg {
   background-image: url("images/background4.jpg");
-  height: 100%;
   background-position: center;
-  background-repeat: no-repeat;
+  background-attachment: scroll;
   background-size: cover;
+  min-height: 970px;
+  height: 100%;
 }
 
 #time {
@@ -456,6 +456,7 @@ html {
   height: 317px;
   width: 275px;
   float: left;
+  overflow-y: scroll;
 }
 
 .top-scorers-text {
@@ -585,7 +586,7 @@ html {
   width: 120px;
 }
 
-@media (max-width: 1300px) {
+@media (max-width: 1350px) {
   .next-game-container {
     height: 385px;
     width: 20%;
@@ -601,6 +602,9 @@ html {
     width: 22%;
   }
   .clock-container {
+    margin-left: 26%;
+  }
+  .google-search-container {
     margin-left: 26%;
   }
 }

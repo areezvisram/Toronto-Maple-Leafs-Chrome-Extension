@@ -5,7 +5,6 @@
   "chrome_url_overrides": {
     "newtab": "background.html"
   },
-  "permissions": ["bookmarks"],
   "icons": {
     "16": "images/icon16.png",
     "48": "images/icon48.png",

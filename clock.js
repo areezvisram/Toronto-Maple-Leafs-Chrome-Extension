@@ -1,14 +1,6 @@
 class Player {
-  constructor(
-    playerName,
-    gamesPlayed,
-    goals,
-    assists,
-    points
-    //position
-  ) {
+  constructor(playerName, gamesPlayed, goals, assists, points) {
     this.playerName = playerName;
-    // this.position = position;
     this.gamesPlayed = gamesPlayed;
     this.goals = goals;
     this.assists = assists;
@@ -24,6 +16,9 @@ class Goalie {
 }
 
 window.addEventListener("load", function () {
+  var bg = document.getElementById("bg");
+  var random = Math.round(Math.random() * (8 - 1) + 1);
+  bg.style.backgroundImage = "url('images/background" + random + ".jpg')";
   function doDate() {
     var now = new Date();
 
@@ -134,8 +129,6 @@ window.addEventListener("load", function () {
       "https://statsapi.web.nhl.com/api/v1/teams/10?expand=team.schedule.previous"
     );
     let lastGameResponse = await lastGameRequest.json();
-    console.log(lastGameResponse);
-
     let lastGameDate =
       lastGameResponse["teams"][0]["previousGameSchedule"]["dates"][0]["date"];
     document.getElementById("last-game-date").innerHTML =
@@ -245,7 +238,6 @@ window.addEventListener("load", function () {
       if (leafsRoster[i] != undefined) {
         let playerLink = leafsRoster[i]["person"]["link"];
         let playerName = leafsRoster[i]["person"]["fullName"];
-        console.log(leafsRoster);
 
         let playerStatsRequest = await fetch(
           "https://statsapi.web.nhl.com/" +
@@ -253,9 +245,6 @@ window.addEventListener("load", function () {
             "/stats?stats=statsSingleSeasonPlayoffs&season=20192020"
         );
         let playerStatsResponse = await playerStatsRequest.json();
-
-        console.log(playerStatsResponse);
-
         try {
           playerStats = playerStatsResponse["stats"][0]["splits"][0]["stat"];
         } catch (error) {
@@ -285,7 +274,6 @@ window.addEventListener("load", function () {
         }
       }
     }
-    console.log(playerArray);
     for (let i = 0; i < playerArray.length; i++) {
       top.push(playerArray[i][stat]);
       topUnsorted.push(playerArray[i][stat]);
@@ -323,6 +311,7 @@ window.addEventListener("load", function () {
         }
       }
     } else {
+      console.log(topPlayers);
       for (let i = 1; i < 7; i++) {
         let name = topPlayers[i - 1]["playerName"];
         let total = topPlayers[i - 1][stat];

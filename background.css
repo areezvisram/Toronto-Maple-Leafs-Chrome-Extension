@@ -14,7 +14,6 @@ html {
 }
 
 .bg {
-  background-image: url("images/background4.jpg");
   background-position: center;
   background-attachment: scroll;
   background-size: cover;
@@ -456,7 +455,6 @@ html {
   height: 317px;
   width: 275px;
   float: left;
-  overflow-y: scroll;
 }
 
 .top-scorers-text {

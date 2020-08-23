@@ -60,10 +60,11 @@ window.addEventListener("load", function () {
         nextGameResponse["teams"][0]["nextGameSchedule"]["dates"][0]["date"];
       document.getElementById("next-game-date").innerHTML =
         "DATE: " + nextGameDate;
-      let nextGameAway =
-        nextGameResponse["teams"][0]["nextGameSchedule"]["dates"][0][
-          "games"
-        ][0]["teams"]["away"]["team"]["name"];
+      let nextGameAway = nextGameResponse["teams"][0]["nextGameSchedule"]["dates"][0]["games"][0]["teams"]["away"]["team"]["name"];
+      if (nextGameAway == "Montréal Canadiens") {
+        nextGameAway = "Montreal Canadiens";
+      }
+      
       document.getElementById(
         "next-game-away"
       ).innerHTML = nextGameAway.toUpperCase();
@@ -89,6 +90,9 @@ window.addEventListener("load", function () {
         nextGameResponse["teams"][0]["nextGameSchedule"]["dates"][0][
           "games"
         ][0]["teams"]["home"]["team"]["name"];
+      if (nextGameHome == "Montréal Canadiens") {
+        nextGameHome = "Montreal Canadiens";
+      }
       document.getElementById(
         "next-game-home"
       ).innerHTML = nextGameHome.toUpperCase();
@@ -134,10 +138,10 @@ window.addEventListener("load", function () {
     document.getElementById("last-game-date").innerHTML =
       "DATE: " + lastGameDate;
 
-    let lastGameAway =
-      lastGameResponse["teams"][0]["previousGameSchedule"]["dates"][0][
-        "games"
-      ][0]["teams"]["away"]["team"]["name"];
+    let lastGameAway = lastGameResponse["teams"][0]["previousGameSchedule"]["dates"][0]["games"][0]["teams"]["away"]["team"]["name"];
+    if (lastGameAway == "Montréal Canadiens") {
+      lastGameAway = "Montreal Canadiens";
+    }
     document.getElementById(
       "last-game-away"
     ).innerHTML = lastGameAway.toUpperCase();
@@ -178,10 +182,10 @@ window.addEventListener("load", function () {
       "last-game-home-record"
     ).innerHTML = lastGameHomeRecord;
 
-    let lastGameHome =
-      lastGameResponse["teams"][0]["previousGameSchedule"]["dates"][0][
-        "games"
-      ][0]["teams"]["home"]["team"]["name"];
+    let lastGameHome = lastGameResponse["teams"][0]["previousGameSchedule"]["dates"][0]["games"][0]["teams"]["home"]["team"]["name"];
+    if (lastGameHome == "Montréal Canadiens") {
+      lastGameHome = "Montreal Canadiens";
+    }
     document.getElementById(
       "last-game-home"
     ).innerHTML = lastGameHome.toUpperCase();
@@ -332,18 +336,20 @@ window.addEventListener("load", function () {
       allPoints[0].parentNode.removeChild(allPoints[0]);
     }
     if (filter == "division") {
-      const divisionStandingsRequest = await fetch(
-        "https://statsapi.web.nhl.com/api/v1/standings"
-      );
+      const divisionStandingsRequest = await fetch("https://statsapi.web.nhl.com/api/v1/standings");
       let divisionStandingsResponse = await divisionStandingsRequest.json();
-      let divisionStandingsArray =
-        divisionStandingsResponse["records"][1]["teamRecords"];
+      let divisionStandingsArray = divisionStandingsResponse["records"][1]["teamRecords"];
       var container = document.getElementById("standings-container");
       for (let i = 0; i < divisionStandingsArray.length; i++) {
         var teamLogo = document.createElement("img");
         teamLogo.className = "standings-logo";
-        let teamName = divisionStandingsArray[i]["team"]["name"];
-        teamLogo.src = "images/teams/" + teamName + ".png";
+        var teamName = divisionStandingsArray[i]["team"]["name"];
+        if (teamName.includes('Canadiens')) {
+          teamLogo.src = "images/teams/Montreal Canadiens.png";
+        }
+        else {
+          teamLogo.src = "images/teams/" + teamName + ".png";
+        }
         var teamPoints = document.createElement("div");
         teamPoints.className = "standings-points";
         teamPoints.innerHTML =
@@ -369,7 +375,12 @@ window.addEventListener("load", function () {
         var teamLogo = document.createElement("img");
         teamLogo.className = "standings-logo";
         let teamName = confStandingsArray[i]["team"]["name"];
-        teamLogo.src = "images/teams/" + teamName + ".png";
+        if (teamName.includes('Canadiens')) {
+          teamLogo.src = "images/teams/Montreal Canadiens.png";
+        }
+        else {
+          teamLogo.src = "images/teams/" + teamName + ".png";
+        }
         var teamPoints = document.createElement("div");
         teamPoints.className = "standings-points";
         teamPoints.innerHTML = "- " + confStandingsArray[i]["points"] + " PTS";
@@ -394,7 +405,12 @@ window.addEventListener("load", function () {
         var teamLogo = document.createElement("img");
         teamLogo.className = "standings-logo";
         let teamName = leagueStandingsArray[i]["team"]["name"];
-        teamLogo.src = "images/teams/" + teamName + ".png";
+        if (teamName.includes('Canadiens')) {
+          teamLogo.src = "images/teams/Montreal Canadiens.png";
+        }
+        else {
+          teamLogo.src = "images/teams/" + teamName + ".png";
+        }
         var teamPoints = document.createElement("div");
         teamPoints.className = "standings-points";
         teamPoints.innerHTML =

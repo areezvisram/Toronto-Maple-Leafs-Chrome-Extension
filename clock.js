@@ -56,18 +56,14 @@ window.addEventListener("load", function () {
     let nextGameResponse = await nextGameRequest.json();
     let nextGameExists = true;
     try {
-      let nextGameDate =
-        nextGameResponse["teams"][0]["nextGameSchedule"]["dates"][0]["date"];
-      document.getElementById("next-game-date").innerHTML =
-        "DATE: " + nextGameDate;
+      let nextGameDate = nextGameResponse["teams"][0]["nextGameSchedule"]["dates"][0]["date"];
+      document.getElementById("next-game-date").innerHTML = "DATE: " + nextGameDate;
       let nextGameAway = nextGameResponse["teams"][0]["nextGameSchedule"]["dates"][0]["games"][0]["teams"]["away"]["team"]["name"];
       if (nextGameAway == "Montréal Canadiens") {
         nextGameAway = "Montreal Canadiens";
       }
       
-      document.getElementById(
-        "next-game-away"
-      ).innerHTML = nextGameAway.toUpperCase();
+      document.getElementById("next-game-away").innerHTML = nextGameAway.toUpperCase();
       let nextGameAwayWins =
         nextGameResponse["teams"][0]["nextGameSchedule"]["dates"][0][
           "games"

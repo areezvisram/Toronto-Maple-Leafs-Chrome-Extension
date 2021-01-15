@@ -82,7 +82,8 @@ window.addEventListener("load", function () {
       let nextGameDate = nextGameResponse["teams"][0]["nextGameSchedule"]["dates"][0]["date"];
       document.getElementById("next-game-date").innerHTML = "DATE: " + nextGameDate;
       let nextGameAway = nextGameResponse["teams"][0]["nextGameSchedule"]["dates"][0]["games"][0]["teams"]["away"]["team"]["name"];
-      if (nextGameAway == "Montréal Canadiens") {
+      console.log(nextGameAway)
+      if (nextGameAway.includes('Canadiens')) {
         nextGameAway = "Montreal Canadiens";
       }
       document.getElementById("next-game-away").innerHTML = nextGameAway.toUpperCase();
@@ -96,7 +97,7 @@ window.addEventListener("load", function () {
 
       // Getting next game home team 
       let nextGameHome = nextGameResponse["teams"][0]["nextGameSchedule"]["dates"][0]["games"][0]["teams"]["home"]["team"]["name"];
-      if (nextGameHome == "Montréal Canadiens") {
+      if (nextGameHome.includes('Canadiens')) {
         nextGameHome = "Montreal Canadiens";
       }
       document.getElementById("next-game-home").innerHTML = nextGameHome.toUpperCase();
@@ -108,7 +109,7 @@ window.addEventListener("load", function () {
       let nextGameHomeRecord = nextGameHomeWins + "-" + nextGameHomeLosses + "-" + nextGameHomeOT;
       document.getElementById("next-game-home-record").innerHTML = nextGameHomeRecord;
 
-      // Getting next game away logo
+      // Getting next game away logo      
       let nextGameAwayLogoSrc = "images/teams/" + nextGameAway + ".png";
       document.getElementById("next-away-team-logo").src = nextGameAwayLogoSrc;
 
@@ -139,7 +140,7 @@ window.addEventListener("load", function () {
 
     // Getting last game away team
     let lastGameAway = lastGameResponse["teams"][0]["previousGameSchedule"]["dates"][0]["games"][0]["teams"]["away"]["team"]["name"];
-    if (lastGameAway == "Montréal Canadiens") {
+    if (lastGameAway.includes('Canadiens')) {
       lastGameAway = "Montreal Canadiens";
     }
     document.getElementById("last-game-away").innerHTML = lastGameAway.toUpperCase();
@@ -160,7 +161,7 @@ window.addEventListener("load", function () {
 
     // Getting last game home team
     let lastGameHome = lastGameResponse["teams"][0]["previousGameSchedule"]["dates"][0]["games"][0]["teams"]["home"]["team"]["name"];
-    if (lastGameHome == "Montréal Canadiens") {
+    if (lastGameHome.includes('Canadiens')) {
       lastGameHome = "Montreal Canadiens";
     }
     document.getElementById("last-game-home").innerHTML = lastGameHome.toUpperCase();
@@ -224,7 +225,7 @@ window.addEventListener("load", function () {
         let playerName = leafsRoster[i]["person"]["fullName"];
 
         // Individual player request and JSON object
-        let playerStatsRequest = await fetch("https://statsapi.web.nhl.com/" + playerLink + "/stats?stats=statsSingleSeasonPlayoffs&season=20192020");
+        let playerStatsRequest = await fetch("https://statsapi.web.nhl.com/" + playerLink + "/stats?stats=statsSingleSeason&season=20202021");
         let playerStatsResponse = await playerStatsRequest.json();
         try {
           playerStats = playerStatsResponse["stats"][0]["splits"][0]["stat"];
@@ -333,7 +334,7 @@ window.addEventListener("load", function () {
       // Request and JSON object
       const divisionStandingsRequest = await fetch("https://statsapi.web.nhl.com/api/v1/standings");
       let divisionStandingsResponse = await divisionStandingsRequest.json();
-      let divisionStandingsArray = divisionStandingsResponse["records"][1]["teamRecords"];
+      let divisionStandingsArray = divisionStandingsResponse["records"][3]["teamRecords"];      
       var container = document.getElementById("standings-container");
 
       // For each team in the division, get and show name, logo and points

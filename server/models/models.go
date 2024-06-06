@@ -17,6 +17,17 @@ type NextGameResponse struct {
 	Games []Game `json:"games"`
 }
 
+type PlayerStats struct {
+	Assists int    `json:"assists"`
+	Goals   int    `json:"goals"`
+	Points  int    `json:"points"`
+	Name    string `json:"skaterFullName"`
+}
+
+type PlayerStatsResponse struct {
+	PlayerStats []PlayerStats `json:"data"`
+}
+
 type FilteredGame struct {
 	GameDate     string `json:"gameDate"`
 	AwayTeam     string `json:"awayTeam"`
@@ -27,4 +38,13 @@ type FilteredGame struct {
 
 type FilteredResponse struct {
 	Games []FilteredGame `json:"games"`
+}
+
+type FilteredPlayerStatsResponse struct {
+	PlayersStats []PlayerStats `json:"playerStats"`
+}
+
+type CombinedPlayersAndGamesResponse struct {
+	Games       []FilteredGame `json:"games"`
+	PlayerStats []PlayerStats  `json:"playerStats"`
 }

@@ -52,3 +52,26 @@ func CopyResponse(w http.ResponseWriter, resp *http.Response, processor Response
 	w.Write(processedBody)
 	return nil
 }
+
+func ReadAndProcessResponse(resp *http.Response, processor ResponseProcessor) ([]byte, error) {
+	defer resp.Body.Close()
+
+	var reader io.Reader
+	if strings.Contains(resp.Header.Get("Content-Encoding"), "gzip") {
+		gzipReader, err := gzip.NewReader(resp.Body)
+		if err != nil {
+			return nil, err
+		}
+		defer gzipReader.Close()
+		reader = gzipReader
+	} else {
+		reader = resp.Body
+	}
+
+	body, err := io.ReadAll(reader)
+	if err != nil {
+		return nil, err
+	}
+
+	return processor(body)
+}

@@ -92,3 +92,26 @@ func HandleNextGameProxy(url1, url2 string, client httpclient.HttpClient) http.H
 		w.Write(combinedResponseJSON)
 	}
 }
+
+func HandleStandingsProxy(url string, client httpclient.HttpClient) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		log.Println("Request made for NHL standings")
+
+		req, err := utils.CreateRequest(r.Method, url, r.Header)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		resp, err := client.Do(req)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		if err := utils.CopyResponse(w, resp, processors.StandingsProcessor); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+
+	}
+}

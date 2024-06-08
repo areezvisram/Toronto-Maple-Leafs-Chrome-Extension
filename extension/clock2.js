@@ -66,74 +66,39 @@ window.addEventListener("load", function () {
         }
     }
 
-    async function getNextGame() {
+    let scheduleData = [];
+    let statsData = [];
 
-        // Request and JSON object
-        const nextGameRequest = await fetch("http://localhost:8080/api/nhl-schedule");
-        let nextGameResponse = await nextGameRequest.json();
+    // async function getTopScorers(stat, position)
+    async function getStatsAndSchedule() {
+        const response = await fetch("http://localhost:8080/api/nhl-schedule");
+        const data = await response.json();
+        scheduleData = data["games"];
+        statsData = data["playerStats"];
+    }
 
-        let games = nextGameResponse["games"];
-
-        if (games.length == 0) {
-            document.getElementById("next-game").style.display = "none";
-            document.getElementById("season-over").style.display = "block";
+    async function setStats() {
+        let players = []
+        for (i in statsData) {
+            let p = new Player(
+                statsData[i].skaterFullName,
+                82,
+                statsData[i].goals,
+                statsData[i].assists,
+                statsData[i].points
+            )
+            players.push(p)
         }
-        // let nextGameExists = true;
 
-        // // Making sure there is a next game (not end of season)
-        // try {
-
-        //     // Getting next game away team
-        //     let nextGameDate = nextGameResponse["teams"][0]["nextGameSchedule"]["dates"][0]["date"];
-        //     document.getElementById("next-game-date").innerHTML = "DATE: " + nextGameDate;
-        //     let nextGameAway = nextGameResponse["teams"][0]["nextGameSchedule"]["dates"][0]["games"][0]["teams"]["away"]["team"]["name"];
-        //     console.log(nextGameAway)
-        //     if (nextGameAway.includes('Canadiens')) {
-        //         nextGameAway = "Montreal Canadiens";
-        //     }
-        //     document.getElementById("next-game-away").innerHTML = nextGameAway.toUpperCase();
-
-        //     // Geting next game away team record
-        //     let nextGameAwayWins = nextGameResponse["teams"][0]["nextGameSchedule"]["dates"][0]["games"][0]["teams"]["away"]["leagueRecord"]["wins"];
-        //     let nextGameAwayLosses = nextGameResponse["teams"][0]["nextGameSchedule"]["dates"][0]["games"][0]["teams"]["away"]["leagueRecord"]["losses"];
-        //     let nextGameAwayOT = nextGameResponse["teams"][0]["nextGameSchedule"]["dates"][0]["games"][0]["teams"]["away"]["leagueRecord"]["ot"];
-        //     let nextGameAwayRecord = nextGameAwayWins + "-" + nextGameAwayLosses + "-" + nextGameAwayOT;
-        //     document.getElementById("next-game-away-record").innerHTML = nextGameAwayRecord;
-
-        //     // Getting next game home team 
-        //     let nextGameHome = nextGameResponse["teams"][0]["nextGameSchedule"]["dates"][0]["games"][0]["teams"]["home"]["team"]["name"];
-        //     if (nextGameHome.includes('Canadiens')) {
-        //         nextGameHome = "Montreal Canadiens";
-        //     }
-        //     document.getElementById("next-game-home").innerHTML = nextGameHome.toUpperCase();
-
-        //     // Getting next game home team record
-        //     let nextGameHomeWins = nextGameResponse["teams"][0]["nextGameSchedule"]["dates"][0]["games"][0]["teams"]["home"]["leagueRecord"]["wins"];
-        //     let nextGameHomeLosses = nextGameResponse["teams"][0]["nextGameSchedule"]["dates"][0]["games"][0]["teams"]["home"]["leagueRecord"]["losses"];
-        //     let nextGameHomeOT = nextGameResponse["teams"][0]["nextGameSchedule"]["dates"][0]["games"][0]["teams"]["home"]["leagueRecord"]["ot"];
-        //     let nextGameHomeRecord = nextGameHomeWins + "-" + nextGameHomeLosses + "-" + nextGameHomeOT;
-        //     document.getElementById("next-game-home-record").innerHTML = nextGameHomeRecord;
-
-        //     // Getting next game away logo      
-        //     let nextGameAwayLogoSrc = "images/teams/" + nextGameAway + ".png";
-        //     document.getElementById("next-away-team-logo").src = nextGameAwayLogoSrc;
-
-        //     // Getting next game home logo
-        //     let nextGameHomeLogoSrc = "images/teams/" + nextGameHome + ".png";
-        //     document.getElementById("next-home-team-logo").src = nextGameHomeLogoSrc;
-
-        // } catch (error) {
-        //     nextGameExists = false;
-        // }
-
-        // // If end of season, show that there is no next game
-        // if (nextGameExists == false) {
-        //     document.getElementById("next-game").style.display = "none";
-        //     document.getElementById("season-over").style.display = "block";
-        // }
+        for (let i = 1; i < 7; i++) {
+            let name = players[i - 1]["playerName"];
+            let points = players[i - 1]["points"];
+            document.getElementById(i).innerHTML = name.toUpperCase() + ": " + points;
+        }
     }
 
     // Perform all the functions on window load to show the desired screen
     setInterval(doDate, 1000);
-    getNextGame();
+    // getNextGame();
+    getStatsAndSchedule().then(setStats)
 });

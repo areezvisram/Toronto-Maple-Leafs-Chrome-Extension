@@ -75,3 +75,7 @@ func ReadAndProcessResponse(resp *http.Response, processor ResponseProcessor) ([
 
 	return processor(body)
 }
+
+func EnableCors(w *http.ResponseWriter)  {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+}

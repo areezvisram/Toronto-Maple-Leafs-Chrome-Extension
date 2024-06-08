@@ -308,7 +308,7 @@ window.addEventListener("load", function () {
       for (let i = 1; i < 7; i++) {
         let name = topPlayers[i - 1]["playerName"];
         let total = topPlayers[i - 1][stat];
-        document.getElementById(i).innerHTML =  name.toUpperCase() + ": " + total;
+        document.getElementById(i).innerHTML = name.toUpperCase() + ": " + total;
       }
     }
   }

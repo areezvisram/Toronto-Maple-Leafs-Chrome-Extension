@@ -14,10 +14,11 @@ func PlayerStatsProcessor(body []byte) ([]byte, error) {
 	var filteredResponse models.FilteredPlayerStatsResponse
 	for _, playerStats := range playerStatsResponse.PlayerStats {
 		filteredPlayerStats := models.PlayerStats{
-			Assists: playerStats.Assists,
-			Goals:   playerStats.Goals,
-			Points:  playerStats.Points,
-			Name:    playerStats.Name,
+			Assists:  playerStats.Assists,
+			Goals:    playerStats.Goals,
+			Points:   playerStats.Points,
+			Name:     playerStats.Name,
+			Position: playerStats.Position,
 		}
 		filteredResponse.PlayersStats = append(filteredResponse.PlayersStats, filteredPlayerStats)
 	}

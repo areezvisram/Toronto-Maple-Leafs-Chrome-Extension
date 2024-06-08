@@ -16,6 +16,8 @@ func HandleNextGameProxy(url1, url2 string, client httpclient.HttpClient) http.H
 	return func(w http.ResponseWriter, r *http.Request) {
 		log.Println("Request made for NHL schedule")
 
+		utils.EnableCors(&w)
+
 		var wg sync.WaitGroup
 		responses := make(chan []byte, 2)
 		errors := make(chan error, 2)

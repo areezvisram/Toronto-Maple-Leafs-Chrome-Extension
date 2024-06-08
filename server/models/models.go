@@ -18,10 +18,11 @@ type NextGameResponse struct {
 }
 
 type PlayerStats struct {
-	Assists int    `json:"assists"`
-	Goals   int    `json:"goals"`
-	Points  int    `json:"points"`
-	Name    string `json:"skaterFullName"`
+	Assists  int    `json:"assists"`
+	Goals    int    `json:"goals"`
+	Points   int    `json:"points"`
+	Name     string `json:"skaterFullName"`
+	Position string `json:"positionCode"`
 }
 
 type PlayerStatsResponse struct {

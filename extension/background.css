@@ -216,9 +216,11 @@ html {
   font-size: 16px;
   text-indent: 15px;
 }
+
 .bar:hover {
   box-shadow: 1px 1px 8px 1px #dcdcdc;
 }
+
 .bar:focus-within {
   box-shadow: 1px 1px 8px 1px #dcdcdc;
   outline: none;
@@ -235,11 +237,13 @@ html {
   border-radius: 4px;
   outline: none;
 }
+
 .button:hover {
   border: 1px solid #c8c8c8;
   padding: 9px 19px;
   color: #808080;
 }
+
 .button:focus {
   border: 1px solid #4885ed;
   padding: 9px 19px;
@@ -453,6 +457,7 @@ html {
   left: 0;
   background-color: #00205b;
   height: 317px;
+  overflow-y: auto;
   width: 275px;
   float: left;
 }
@@ -546,6 +551,7 @@ html {
   margin-top: 10px;
   margin-left: 8%;
 }
+
 .standings-logo {
   height: 45px;
   width: 45px;
@@ -589,19 +595,24 @@ html {
     height: 385px;
     width: 20%;
   }
+
   .last-game-container {
     height: 385px;
     width: 20%;
   }
+
   .top-scorers-container {
     width: 22%;
   }
+
   .standings-container {
     width: 22%;
   }
+
   .clock-container {
     margin-left: 26%;
   }
+
   .google-search-container {
     margin-left: 26%;
   }

@@ -77,9 +77,15 @@ window.addEventListener("load", function () {
         statsData = data["playerStats"];
     }
 
-    async function setStats() {
-        let players = []
+    async function setStats(stat, def = false, goalie = false) {
+        let players = [];
+        const container = document.querySelector('.top-scorers-container');
+        const currentScorers = container.querySelectorAll('.top-scorers');
+        currentScorers.forEach(scorer => scorer.remove());
         for (i in statsData) {
+            if (def && statsData[i].positionCode !== "D") {
+                continue;
+            }
             let p = new Player(
                 statsData[i].skaterFullName,
                 82,
@@ -90,15 +96,63 @@ window.addEventListener("load", function () {
             players.push(p)
         }
 
-        for (let i = 1; i < 7; i++) {
-            let name = players[i - 1]["playerName"];
-            let points = players[i - 1]["points"];
-            document.getElementById(i).innerHTML = name.toUpperCase() + ": " + points;
-        }
+        players = players.sort((a, b) => b[stat] - a[stat]);
+
+        players.forEach(player => {
+            const scorerDiv = document.createElement('div');
+            scorerDiv.className = 'top-scorers';
+            scorerDiv.innerHTML = `${player.playerName.toUpperCase()}: ${player[stat]}`;
+            container.appendChild(scorerDiv);
+        });
     }
+
+    // Dropdown button and menu configuration 
+    document.getElementById("dropdown-button").onclick = function () {
+        document.getElementById("dropdown-content").style.display = "block";
+    };
+
+    document.getElementById("standings-dropdown-button").onclick = function () {
+        document.getElementById("standings-dropdown-content").style.display = "block";
+    };
+
+    window.onclick = function (event) {
+        if (!event.target.matches(".dropdown-button")) {
+            document.getElementById("dropdown-content").style.display = "none";
+        }
+        if (!event.target.matches("#standings-dropdown-button")) {
+            document.getElementById("standings-dropdown-content").style.display = "none";
+        }
+    };
+
+    let goals = document.getElementById("goals");
+    goals.onclick = function () {
+        setStats("goals");
+        document.getElementById("dropdown-button").innerHTML = "GOALS &#9660";
+    };
+
+    let points = document.getElementById("points");
+    points.onclick = function () {
+        setStats("points");
+        document.getElementById("dropdown-button").innerHTML = "POINTS &#9660";
+    };
+
+    let assists = document.getElementById("assists");
+    assists.onclick = function () {
+        setStats("assists");
+        document.getElementById("dropdown-button").innerHTML = "ASSISTS &#9660";
+    };
+
+    let def = document.getElementById("def");
+    def.onclick = function () {
+        setStats("points", def = true);
+        document.getElementById("dropdown-button").innerHTML = "DEFENSEMEN &#9660";
+    };
+
 
     // Perform all the functions on window load to show the desired screen
     setInterval(doDate, 1000);
     // getNextGame();
-    getStatsAndSchedule().then(setStats)
+    getStatsAndSchedule().then(() => {
+        setStats("points");
+    });
 });

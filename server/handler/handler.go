@@ -1,7 +1,10 @@
 package handler
 
 import (
+	"compress/gzip"
 	"encoding/json"
+	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"strings"
@@ -37,7 +40,9 @@ func HandleNextGameProxy(url1, url2 string, client httpclient.HttpClient) http.H
 				return
 			}
 
-			body, err := utils.ReadAndProcessResponse(resp, processor)
+			body, err := utils.ReadAndProcessResponse(resp, func(body []byte) ([]byte, error) {
+				return processor(body) // pass the HTTP client here
+			})
 			if err != nil {
 				errors <- err
 				return
@@ -66,18 +71,31 @@ func HandleNextGameProxy(url1, url2 string, client httpclient.HttpClient) http.H
 			var games models.FilteredResponse
 			var playerStats models.FilteredPlayerStatsResponse
 
-			if strings.Contains(string(response), "games") {
+			if strings.Contains(string(response), "previousGame") || strings.Contains(string(response), "nextGame") {
 				if err := json.Unmarshal(response, &games); err == nil {
-					combinedResponse.Games = games.Games
-					log.Println("Successfully unmarshaled into FilteredResponse")
-					continue
+					combinedResponse.PreviousGame = games.PreviousGame
+					combinedResponse.NextGame = games.NextGame
+					combinedResponse.PreviousStartDate = games.PreviousStartDate
 				}
+
+				// Fetch previous game if required
+				if combinedResponse.PreviousGame.GameDate == "" {
+					var nextGameResponse models.NextGameResponse
+					if err := json.Unmarshal(response, &nextGameResponse); err == nil {
+						previousGame, err := getPreviousGame(client, nextGameResponse.PreviousStartDate)
+						if err != nil {
+							http.Error(w, err.Error(), http.StatusInternalServerError)
+							return
+						}
+						combinedResponse.PreviousGame = previousGame
+					}
+				}
+				continue
 			}
 
 			if strings.Contains(string(response), "playerStats") {
 				if err := json.Unmarshal(response, &playerStats); err == nil {
 					combinedResponse.PlayerStats = playerStats.PlayersStats
-					log.Println("Successfully unmarshaled into FilteredPlayerStatsResponse")
 					continue
 				}
 			}
@@ -116,4 +134,62 @@ func HandleStandingsProxy(url string, client httpclient.HttpClient) http.Handler
 		}
 
 	}
+}
+
+func getPreviousGame(client httpclient.HttpClient, previousStartDate string) (models.FilteredPreviousGame, error) {
+	url := fmt.Sprintf("https://api-web.nhle.com/v1/club-schedule/EDM/week/%s", previousStartDate)
+	log.Println("Fetching previous game from URL:", url)
+
+	req, err := utils.CreateRequest("GET", url, nil)
+	if err != nil {
+		return models.FilteredPreviousGame{}, err
+	}
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return models.FilteredPreviousGame{}, err
+	}
+
+	defer resp.Body.Close()
+
+	var reader io.Reader
+
+	if strings.Contains(resp.Header.Get("Content-Encoding"), "gzip") {
+		gzipReader, err := gzip.NewReader(resp.Body)
+		if err != nil {
+			return models.FilteredPreviousGame{}, err
+		}
+		defer gzipReader.Close()
+		reader = gzipReader
+	} else {
+		reader = resp.Body
+	}
+
+	body, err := io.ReadAll(reader)
+	if err != nil {
+		return models.FilteredPreviousGame{}, err
+	}
+
+	var previousGameResponse models.NextGameResponse
+	if err := json.Unmarshal(body, &previousGameResponse); err != nil {
+		return models.FilteredPreviousGame{}, err
+	}
+
+	// TODO: Assuming the last game in the response is the previous game
+	// if len(previousGameResponse.Games) == 0 {
+	// 	return models.FilteredGame{}, fmt.Errorf("no previous games found")
+	// }
+
+	lastGame := previousGameResponse.Games[len(previousGameResponse.Games)-1]
+	previousGame := models.FilteredPreviousGame{
+		GameDate:      lastGame.GameDate,
+		AwayTeam:      lastGame.AwayTeam.PlaceName.Default,
+		HomeTeam:      lastGame.HomeTeam.PlaceName.Default,
+		AwayTeamLogo:  lastGame.AwayTeam.Logo,
+		HomeTeamLogo:  lastGame.HomeTeam.Logo,
+		AwayTeamScore: lastGame.AwayTeam.Score,
+		HomeTeamScore: lastGame.HomeTeam.Score,
+	}
+
+	return previousGame, nil
 }

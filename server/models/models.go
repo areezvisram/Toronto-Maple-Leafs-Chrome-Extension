@@ -4,17 +4,20 @@ type Team struct {
 	PlaceName struct {
 		Default string `json:"default"`
 	} `json:"placeName"`
-	Logo string `json:"logo"`
+	Logo  string `json:"logo"`
+	Score int    `json:"score"`
 }
 
 type Game struct {
-	GameDate string `json:"gameDate"`
-	AwayTeam Team   `json:"awayTeam"`
-	HomeTeam Team   `json:"homeTeam"`
+	GameDate  string `json:"gameDate"`
+	AwayTeam  Team   `json:"awayTeam"`
+	HomeTeam  Team   `json:"homeTeam"`
+	GameState string `json:"gameState"`
 }
 
 type NextGameResponse struct {
-	Games []Game `json:"games"`
+	Games             []Game `json:"games"`
+	PreviousStartDate string `json:"previousStartDate"`
 }
 
 type PlayerStats struct {
@@ -67,8 +70,32 @@ type FilteredGame struct {
 	HomeTeamLogo string `json:"homeTeamLogo"`
 }
 
+type FilteredNextGame struct {
+	GameDate     string `json:"gameDate"`
+	AwayTeam     string `json:"awayTeam"`
+	HomeTeam     string `json:"homeTeam"`
+	AwayTeamLogo string `json:"awayTeamLogo"`
+	HomeTeamLogo string `json:"homeTeamLogo"`
+}
+
+type FilteredPreviousGame struct {
+	GameDate      string `json:"gameDate"`
+	AwayTeam      string `json:"awayTeam"`
+	HomeTeam      string `json:"homeTeam"`
+	AwayTeamScore int    `json:"awayTeamScore"`
+	HomeTeamScore int    `json:"homeTeamScore"`
+	AwayTeamLogo  string `json:"awayTeamLogo"`
+	HomeTeamLogo  string `json:"homeTeamLogo"`
+}
+
+// type FilteredResponse struct {
+// 	Games []FilteredGame `json:"games"`
+// }
+
 type FilteredResponse struct {
-	Games []FilteredGame `json:"games"`
+	PreviousGame      FilteredPreviousGame `json:"previousGame"`
+	NextGame          FilteredNextGame     `json:"nextGame"`
+	PreviousStartDate string               `json:"previousStartDate"`
 }
 
 type FilteredPlayerStatsResponse struct {
@@ -80,8 +107,11 @@ type FilteredStandingsResponse struct {
 }
 
 type CombinedPlayersAndGamesResponse struct {
-	Games       []FilteredGame `json:"games"`
-	PlayerStats []PlayerStats  `json:"playerStats"`
+	// Games       []FilteredGame `json:"games"`
+	PreviousStartDate string               `json:"previousStartDate"`
+	PreviousGame      FilteredPreviousGame `json:"previousGame"`
+	NextGame          FilteredNextGame     `json:"nextGame"`
+	PlayerStats       []PlayerStats        `json:"playerStats"`
 }
 
 type SortedStandingsResponse struct {

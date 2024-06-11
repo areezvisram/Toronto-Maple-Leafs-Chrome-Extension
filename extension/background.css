@@ -314,8 +314,8 @@ html {
 }
 
 .next-away-team-logo {
-  height: 80px;
-  width: 80px;
+  height: 100px;
+  width: 100px;
   margin-left: 10px;
   margin-top: 20px;
   display: block;
@@ -326,7 +326,7 @@ html {
   font-family: "quantico";
   color: #ffffff;
   font-size: 20px;
-  margin-left: 40px;
+  margin-left: 20px;
   margin-top: 50px;
   display: block;
   float: left;
@@ -334,8 +334,8 @@ html {
 }
 
 .next-home-team-logo {
-  height: 80px;
-  width: 80px;
+  height: 100px;
+  width: 100px;
   margin-top: 20px;
   margin-right: 10px;
   display: block;
@@ -402,8 +402,8 @@ html {
 }
 
 .last-away-team-logo {
-  height: 75px;
-  width: 75px;
+  height: 95px;
+  width: 95px;
   margin-left: 18px;
   display: block;
   float: left;
@@ -413,7 +413,7 @@ html {
   font-family: "quantico";
   color: #ffffff;
   font-size: 20px;
-  margin-left: 40px;
+  margin-left: 20px;
   margin-top: 30px;
   display: block;
   float: left;
@@ -421,8 +421,8 @@ html {
 }
 
 .last-home-team-logo {
-  height: 75px;
-  width: 75px;
+  height: 95px;
+  width: 95px;
   margin-right: 18px;
   display: block;
   float: right;

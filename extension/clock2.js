@@ -66,14 +66,16 @@ window.addEventListener("load", function () {
         }
     }
 
-    let scheduleData = [];
+    let nextGameData = [];
+    let previousGameData = [];
     let statsData = [];
 
     // async function getTopScorers(stat, position)
     async function getStatsAndSchedule() {
         const response = await fetch("http://localhost:8080/api/nhl-schedule");
         const data = await response.json();
-        scheduleData = data["games"];
+        nextGameData = data["nextGame"];
+        previousGameData = data["previousGame"];
         statsData = data["playerStats"];
     }
 
@@ -104,6 +106,36 @@ window.addEventListener("load", function () {
             scorerDiv.innerHTML = `${player.playerName.toUpperCase()}: ${player[stat]}`;
             container.appendChild(scorerDiv);
         });
+    }
+
+    async function setNextGame() {
+        let nextGameDate = nextGameData["gameDate"];
+        document.getElementById("next-game-date").innerHTML = "DATE: " + nextGameDate;
+        let nextGameAway = nextGameData["awayTeam"];
+        document.getElementById("next-game-away").innerHTML = nextGameAway.toUpperCase();
+        let nextGameHome = nextGameData["homeTeam"];
+        document.getElementById("next-game-home").innerHTML = nextGameHome.toUpperCase();
+        let nextGameAwayLogoSrc = nextGameData["awayTeamLogo"];
+        document.getElementById("next-away-team-logo").src = nextGameAwayLogoSrc;
+        let nextGameHomeLogoSrc = nextGameData["homeTeamLogo"];
+        document.getElementById("next-home-team-logo").src = nextGameHomeLogoSrc;
+    }
+
+    async function setPreviousGame() {
+        let lastGameDate = previousGameData["gameDate"];
+        document.getElementById("last-game-date").innerHTML = "DATE: " + lastGameDate;
+        let lastGameAway = previousGameData["awayTeam"];
+        document.getElementById("last-game-away").innerHTML = lastGameAway.toUpperCase();
+        let lastGameHome = previousGameData["homeTeam"];
+        document.getElementById("last-game-home").innerHTML = lastGameHome.toUpperCase();
+        let lastGameAwayLogoSrc = previousGameData["awayTeamLogo"];
+        document.getElementById("last-away-team-logo").src = lastGameAwayLogoSrc;
+        let lastGameHomeLogoSrc = previousGameData["homeTeamLogo"];
+        document.getElementById("last-home-team-logo").src = lastGameHomeLogoSrc;
+        let lastGameAwayScore = previousGameData["awayTeamScore"];
+        document.getElementById("last-game-away-score").innerHTML = lastGameAwayScore;
+        let lastGameHomeScore = previousGameData["homeTeamScore"];
+        document.getElementById("last-game-home-score").innerHTML = lastGameHomeScore;
     }
 
     // Dropdown button and menu configuration 
@@ -154,5 +186,7 @@ window.addEventListener("load", function () {
     // getNextGame();
     getStatsAndSchedule().then(() => {
         setStats("points");
+        setNextGame();
+        setPreviousGame();
     });
 });

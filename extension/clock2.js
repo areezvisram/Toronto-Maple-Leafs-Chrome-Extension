@@ -69,6 +69,9 @@ window.addEventListener("load", function () {
     let nextGameData = [];
     let previousGameData = [];
     let statsData = [];
+    let divisionStandingsData = [];
+    let conferenceStandingsData = [];
+    let leagueStandingsData = [];
 
     // async function getTopScorers(stat, position)
     async function getStatsAndSchedule() {
@@ -77,6 +80,14 @@ window.addEventListener("load", function () {
         nextGameData = data["nextGame"];
         previousGameData = data["previousGame"];
         statsData = data["playerStats"];
+    }
+
+    async function getStandings() {
+        const response = await fetch("http://localhost:8080/api/standings");
+        const data = await response.json();
+        divisionStandingsData = data["division"];
+        conferenceStandingsData = data["conference"];
+        leagueStandingsData = data["league"];
     }
 
     async function setStats(stat, def = false, goalie = false) {
@@ -138,6 +149,44 @@ window.addEventListener("load", function () {
         document.getElementById("last-game-home-score").innerHTML = lastGameHomeScore;
     }
 
+    async function setStandings(filter) {
+        var allPositions = document.getElementsByClassName("standings-position");
+        var allLogos = document.getElementsByClassName("standings-logo");
+        var allPoints = document.getElementsByClassName("standings-points");
+        var container = document.getElementById("standings-container");
+        while (allPositions[0]) {
+            allPositions[0].parentNode.removeChild(allPositions[0]);
+            allLogos[0].parentNode.removeChild(allLogos[0]);
+            allPoints[0].parentNode.removeChild(allPoints[0]);
+        }
+
+        // Select the appropriate data source based on the filter
+        let standingsData;
+        if (filter === "division") {
+            standingsData = divisionStandingsData;
+        } else if (filter === "conference") {
+            standingsData = conferenceStandingsData;
+        } else if (filter === "league") {
+            standingsData = leagueStandingsData;
+        }
+
+        for (i in standingsData) {
+            let teamLogo = document.createElement("img");
+            teamLogo.className = "standings-logo";
+            teamLogo.src = standingsData[i].teamLogo;
+            let teamPoints = document.createElement("div");
+            teamPoints.className = "standings-points";
+            teamPoints.innerHTML = "- " + standingsData[i].points + " PTS";
+            let teamPosition = document.createElement("div");
+            teamPosition.className = "standings-position";
+            let position = parseInt(i) + 1;
+            teamPosition.innerHTML = position + ". ";
+            container.appendChild(teamPosition);
+            container.appendChild(teamLogo);
+            container.appendChild(teamPoints);
+        }
+    }
+
     // Dropdown button and menu configuration 
     document.getElementById("dropdown-button").onclick = function () {
         document.getElementById("dropdown-content").style.display = "block";
@@ -180,13 +229,34 @@ window.addEventListener("load", function () {
         document.getElementById("dropdown-button").innerHTML = "DEFENSEMEN &#9660";
     };
 
+    let division = document.getElementById("division");
+    division.onclick = function () {
+        setStandings("division");
+        document.getElementById("standings-dropdown-button").innerHTML = "DIVISION &#9660";
+    };
+
+    let conf = document.getElementById("conference");
+    conf.onclick = function () {
+        setStandings("conference");
+        document.getElementById("standings-dropdown-button").innerHTML = "CONFERENCE &#9660";
+    };
+
+    let league = document.getElementById("league");
+    league.onclick = function () {
+        setStandings("league");
+        document.getElementById("standings-dropdown-button").innerHTML = "LEAGUE &#9660";
+    };
+
 
     // Perform all the functions on window load to show the desired screen
     setInterval(doDate, 1000);
     // getNextGame();
-    getStatsAndSchedule().then(() => {
-        setStats("points");
-        setNextGame();
-        setPreviousGame();
+    // getStatsAndSchedule().then(() => {
+    //     // setStats("points");
+    //     // setNextGame();
+    //     // setPreviousGame();
+    // });
+    getStandings().then(() => {
+        setStandings("division");
     });
 });

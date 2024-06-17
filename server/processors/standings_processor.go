@@ -15,6 +15,9 @@ func StandingsProcessor(body []byte) ([]byte, error) {
 	var divisionA, conferenceE, league []models.TeamPoints
 
 	for _, team := range standingsResponse.Standings {
+		if team.Team.Default == "Tampa Bay Lightning" {
+			team.TeamLogo = "https://assets.nhle.com/logos/nhl/svg/TBL_dark.svg"
+		}
 		filteredTeam := models.FilteredStandings{
 			Team:           team.Team.Default,
 			TeamLogo:       team.TeamLogo,
@@ -25,12 +28,12 @@ func StandingsProcessor(body []byte) ([]byte, error) {
 			DivisionRank:   team.DivisionRank,
 			LeagueRank:     team.LeagueRank,
 		}
-		league = append(league, models.TeamPoints{Team: filteredTeam.Team, Points: filteredTeam.Points})
+		league = append(league, models.TeamPoints{Team: filteredTeam.Team, TeamLogo: filteredTeam.TeamLogo, Points: filteredTeam.Points})
 		if team.Division == "A" {
-			divisionA = append(divisionA, models.TeamPoints{Team: filteredTeam.Team, Points: filteredTeam.Points})
+			divisionA = append(divisionA, models.TeamPoints{Team: filteredTeam.Team, TeamLogo: filteredTeam.TeamLogo, Points: filteredTeam.Points})
 		}
 		if team.Conference == "E" {
-			conferenceE = append(conferenceE, models.TeamPoints{Team: filteredTeam.Team, Points: filteredTeam.Points})
+			conferenceE = append(conferenceE, models.TeamPoints{Team: filteredTeam.Team, TeamLogo: filteredTeam.TeamLogo, Points: filteredTeam.Points})
 		}
 	}
 

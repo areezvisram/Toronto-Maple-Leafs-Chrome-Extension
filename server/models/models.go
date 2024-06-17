@@ -121,6 +121,7 @@ type SortedStandingsResponse struct {
 }
 
 type TeamPoints struct {
-	Team   string `json:"team"`
-	Points int    `json:"points"`
+	Team     string `json:"team"`
+	TeamLogo string `json:"teamLogo"`
+	Points   int    `json:"points"`
 }

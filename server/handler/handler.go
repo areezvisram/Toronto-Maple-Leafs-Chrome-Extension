@@ -117,6 +117,8 @@ func HandleStandingsProxy(url string, client httpclient.HttpClient) http.Handler
 	return func(w http.ResponseWriter, r *http.Request) {
 		log.Println("Request made for NHL standings")
 
+		utils.EnableCors(&w)
+
 		req, err := utils.CreateRequest(r.Method, url, r.Header)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)

@@ -15,15 +15,15 @@ import (
 	"tml-extension-server/utils"
 )
 
-func HandleNextGameProxy(url1, url2 string, client httpclient.HttpClient) http.HandlerFunc {
+func HandleNextGameProxy(url1, url2, url3 string, client httpclient.HttpClient) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		log.Println("Request made for NHL schedule")
 
 		utils.EnableCors(&w)
 
 		var wg sync.WaitGroup
-		responses := make(chan []byte, 2)
-		errors := make(chan error, 2)
+		responses := make(chan []byte, 3)
+		errors := make(chan error, 3)
 
 		fetchAndProcess := func(url string, processor utils.ResponseProcessor) {
 			defer wg.Done()
@@ -41,7 +41,7 @@ func HandleNextGameProxy(url1, url2 string, client httpclient.HttpClient) http.H
 			}
 
 			body, err := utils.ReadAndProcessResponse(resp, func(body []byte) ([]byte, error) {
-				return processor(body) // pass the HTTP client here
+				return processor(body)
 			})
 			if err != nil {
 				errors <- err
@@ -51,9 +51,10 @@ func HandleNextGameProxy(url1, url2 string, client httpclient.HttpClient) http.H
 			responses <- body
 		}
 
-		wg.Add(2)
+		wg.Add(3)
 		go fetchAndProcess(url1, processors.NHLGameProcessor)
 		go fetchAndProcess(url2, processors.PlayerStatsProcessor)
+		go fetchAndProcess(url3, processors.GoalieStatsProcessor)
 
 		wg.Wait()
 		close(responses)
@@ -70,6 +71,7 @@ func HandleNextGameProxy(url1, url2 string, client httpclient.HttpClient) http.H
 		for response := range responses {
 			var games models.FilteredResponse
 			var playerStats models.FilteredPlayerStatsResponse
+			var goalieStats models.FilteredGoalieStatsResponse
 
 			if strings.Contains(string(response), "previousGame") || strings.Contains(string(response), "nextGame") {
 				if err := json.Unmarshal(response, &games); err == nil {
@@ -96,6 +98,13 @@ func HandleNextGameProxy(url1, url2 string, client httpclient.HttpClient) http.H
 			if strings.Contains(string(response), "playerStats") {
 				if err := json.Unmarshal(response, &playerStats); err == nil {
 					combinedResponse.PlayerStats = playerStats.PlayersStats
+					continue
+				}
+			}
+
+			if strings.Contains(string(response), "goalieStats") {
+				if err := json.Unmarshal(response, &goalieStats); err == nil {
+					combinedResponse.GoalieStats = goalieStats.GoalieStats
 					continue
 				}
 			}

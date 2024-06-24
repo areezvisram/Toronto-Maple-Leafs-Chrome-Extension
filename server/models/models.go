@@ -28,8 +28,17 @@ type PlayerStats struct {
 	Position string `json:"positionCode"`
 }
 
+type GoalieStats struct {
+	Wins int    `json:"wins"`
+	Name string `json:"goalieFullName"`
+}
+
 type PlayerStatsResponse struct {
 	PlayerStats []PlayerStats `json:"data"`
+}
+
+type GoalieStatsResponse struct {
+	GoalieStats []GoalieStats `json:"data"`
 }
 
 type StandingsTeamName struct {
@@ -102,6 +111,10 @@ type FilteredPlayerStatsResponse struct {
 	PlayersStats []PlayerStats `json:"playerStats"`
 }
 
+type FilteredGoalieStatsResponse struct {
+	GoalieStats []GoalieStats `json:"goalieStats"`
+}
+
 type FilteredStandingsResponse struct {
 	Standings []FilteredStandings `json:"standings"`
 }
@@ -112,6 +125,7 @@ type CombinedPlayersAndGamesResponse struct {
 	PreviousGame      FilteredPreviousGame `json:"previousGame"`
 	NextGame          FilteredNextGame     `json:"nextGame"`
 	PlayerStats       []PlayerStats        `json:"playerStats"`
+	GoalieStats       []GoalieStats        `json:"goalieStats"`
 }
 
 type SortedStandingsResponse struct {

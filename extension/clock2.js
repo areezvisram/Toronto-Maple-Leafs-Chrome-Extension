@@ -68,7 +68,8 @@ window.addEventListener("load", function () {
 
     let nextGameData = [];
     let previousGameData = [];
-    let statsData = [];
+    let playerStatsData = [];
+    let goalieStatsData = [];
     let divisionStandingsData = [];
     let conferenceStandingsData = [];
     let leagueStandingsData = [];
@@ -79,7 +80,8 @@ window.addEventListener("load", function () {
         const data = await response.json();
         nextGameData = data["nextGame"];
         previousGameData = data["previousGame"];
-        statsData = data["playerStats"];
+        playerStatsData = data["playerStats"];
+        goalieStatsData = data["goalieStats"];
     }
 
     async function getStandings() {
@@ -95,21 +97,31 @@ window.addEventListener("load", function () {
         const container = document.querySelector('.top-scorers-container');
         const currentScorers = container.querySelectorAll('.top-scorers');
         currentScorers.forEach(scorer => scorer.remove());
-        for (i in statsData) {
-            if (def && statsData[i].positionCode !== "D") {
-                continue;
+        if (goalie) {
+            for (i in goalieStatsData) {
+                let g = new Goalie(
+                    goalieStatsData[i].goalieFullName,
+                    goalieStatsData[i].wins
+                )
+                players.push(g)
             }
-            let p = new Player(
-                statsData[i].skaterFullName,
-                82,
-                statsData[i].goals,
-                statsData[i].assists,
-                statsData[i].points
-            )
-            players.push(p)
+        } else {
+            for (i in playerStatsData) {
+                if (def && playerStatsData[i].positionCode !== "D") {
+                    continue;
+                }
+                let p = new Player(
+                    playerStatsData[i].skaterFullName,
+                    82,
+                    playerStatsData[i].goals,
+                    playerStatsData[i].assists,
+                    playerStatsData[i].points
+                )
+                players.push(p)
+            }
+            players = players.sort((a, b) => b[stat] - a[stat]);
         }
 
-        players = players.sort((a, b) => b[stat] - a[stat]);
 
         players.forEach(player => {
             const scorerDiv = document.createElement('div');
@@ -229,6 +241,13 @@ window.addEventListener("load", function () {
         document.getElementById("dropdown-button").innerHTML = "DEFENSEMEN &#9660";
     };
 
+    let tend = document.getElementById("tend");
+    tend.onclick = function () {
+        // setStats("points", def = true, goalie = true);
+        setStats("wins", def = false, goalie = true);
+        document.getElementById("dropdown-button").innerHTML = "GOALIE WINS &#9660";
+    };
+
     let division = document.getElementById("division");
     division.onclick = function () {
         setStandings("division");
@@ -251,11 +270,11 @@ window.addEventListener("load", function () {
     // Perform all the functions on window load to show the desired screen
     setInterval(doDate, 1000);
     // getNextGame();
-    // getStatsAndSchedule().then(() => {
-    //     // setStats("points");
-    //     // setNextGame();
-    //     // setPreviousGame();
-    // });
+    getStatsAndSchedule().then(() => {
+        setStats("points");
+        setNextGame();
+        setPreviousGame();
+    });
     getStandings().then(() => {
         setStandings("division");
     });

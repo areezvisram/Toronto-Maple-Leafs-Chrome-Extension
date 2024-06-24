@@ -46,7 +46,7 @@ type StandingsTeamName struct {
 }
 
 type Standings struct {
-	Team           StandingsTeamName `json:"teamName"`
+	Team           StandingsTeamName `json:"placeName"`
 	TeamLogo       string            `json:"teamLogo"`
 	Points         int               `json:"points"`
 	Conference     string            `json:"conferenceAbbrev"`
@@ -54,6 +54,9 @@ type Standings struct {
 	Division       string            `json:"divisionAbbrev"`
 	DivisionRank   int               `json:"divisionSequence"`
 	LeagueRank     int               `json:"leagueSequence"`
+	Wins           int               `json:"wins"`
+	Losses         int               `json:"losses"`
+	OTLosses       int               `json:"otLosses"`
 }
 
 type FilteredStandings struct {
@@ -65,6 +68,7 @@ type FilteredStandings struct {
 	Division       string `json:"divisionAbbrev"`
 	DivisionRank   int    `json:"divisionSequence"`
 	LeagueRank     int    `json:"leagueSequence"`
+	Record         string `json:"record"`
 }
 
 type StandingsResponse struct {
@@ -138,4 +142,5 @@ type TeamPoints struct {
 	Team     string `json:"team"`
 	TeamLogo string `json:"teamLogo"`
 	Points   int    `json:"points"`
+	Record   string `json:"record"`
 }

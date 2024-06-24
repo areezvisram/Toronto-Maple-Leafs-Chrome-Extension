@@ -317,7 +317,6 @@ html {
   height: 100px;
   width: 100px;
   margin-left: 10px;
-  margin-top: 20px;
   display: block;
   float: left;
 }
@@ -327,7 +326,7 @@ html {
   color: #ffffff;
   font-size: 20px;
   margin-left: 20px;
-  margin-top: 50px;
+  margin-top: 30px;
   display: block;
   float: left;
   text-align: center;
@@ -336,7 +335,6 @@ html {
 .next-home-team-logo {
   height: 100px;
   width: 100px;
-  margin-top: 20px;
   margin-right: 10px;
   display: block;
   float: right;
@@ -407,6 +405,7 @@ html {
   margin-left: 18px;
   display: block;
   float: left;
+  margin-top: -10px;
 }
 
 .last-game-at-2 {
@@ -414,7 +413,7 @@ html {
   color: #ffffff;
   font-size: 20px;
   margin-left: 20px;
-  margin-top: 30px;
+  margin-top: 20px;
   display: block;
   float: left;
   text-align: center;
@@ -426,6 +425,7 @@ html {
   margin-right: 18px;
   display: block;
   float: right;
+  margin-top: -10px;
 }
 
 .last-game-score {

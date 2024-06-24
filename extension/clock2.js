@@ -142,6 +142,13 @@ window.addEventListener("load", function () {
         document.getElementById("next-away-team-logo").src = nextGameAwayLogoSrc;
         let nextGameHomeLogoSrc = nextGameData["homeTeamLogo"];
         document.getElementById("next-home-team-logo").src = nextGameHomeLogoSrc;
+
+
+        // get the record of both teams from the "record" field of the league standings data
+        let awayTeamRecord = leagueStandingsData.find(team => team.team === nextGameAway);
+        let homeTeamRecord = leagueStandingsData.find(team => team.team === nextGameHome);
+        document.getElementById("next-game-home-record").innerHTML = homeTeamRecord.record;
+        document.getElementById("next-game-away-record").innerHTML = awayTeamRecord.record;
     }
 
     async function setPreviousGame() {
@@ -159,6 +166,11 @@ window.addEventListener("load", function () {
         document.getElementById("last-game-away-score").innerHTML = lastGameAwayScore;
         let lastGameHomeScore = previousGameData["homeTeamScore"];
         document.getElementById("last-game-home-score").innerHTML = lastGameHomeScore;
+
+        let awayTeamRecord = leagueStandingsData.find(team => team.team === lastGameAway);
+        let homeTeamRecord = leagueStandingsData.find(team => team.team === lastGameHome);
+        document.getElementById("last-game-home-record").innerHTML = homeTeamRecord.record;
+        document.getElementById("last-game-away-record").innerHTML = awayTeamRecord.record;
     }
 
     async function setStandings(filter) {
@@ -270,12 +282,12 @@ window.addEventListener("load", function () {
     // Perform all the functions on window load to show the desired screen
     setInterval(doDate, 1000);
     // getNextGame();
+    getStandings().then(() => {
+        setStandings("division");
+    });
     getStatsAndSchedule().then(() => {
         setStats("points");
         setNextGame();
         setPreviousGame();
-    });
-    getStandings().then(() => {
-        setStandings("division");
     });
 });

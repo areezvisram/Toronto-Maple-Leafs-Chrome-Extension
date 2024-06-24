@@ -2,6 +2,7 @@ package processors
 
 import (
 	"encoding/json"
+	"fmt"
 	"sort"
 	"tml-extension-server/models"
 )
@@ -15,7 +16,7 @@ func StandingsProcessor(body []byte) ([]byte, error) {
 	var divisionA, conferenceE, league []models.TeamPoints
 
 	for _, team := range standingsResponse.Standings {
-		if team.Team.Default == "Tampa Bay Lightning" {
+		if team.Team.Default == "Tampa Bay" {
 			team.TeamLogo = "https://assets.nhle.com/logos/nhl/svg/TBL_dark.svg"
 		}
 		filteredTeam := models.FilteredStandings{
@@ -27,8 +28,9 @@ func StandingsProcessor(body []byte) ([]byte, error) {
 			ConferenceRank: team.ConferenceRank,
 			DivisionRank:   team.DivisionRank,
 			LeagueRank:     team.LeagueRank,
+			Record:         fmt.Sprintf("%d-%d-%d", team.Wins, team.Losses, team.OTLosses),
 		}
-		league = append(league, models.TeamPoints{Team: filteredTeam.Team, TeamLogo: filteredTeam.TeamLogo, Points: filteredTeam.Points})
+		league = append(league, models.TeamPoints{Team: filteredTeam.Team, TeamLogo: filteredTeam.TeamLogo, Points: filteredTeam.Points, Record: filteredTeam.Record})
 		if team.Division == "A" {
 			divisionA = append(divisionA, models.TeamPoints{Team: filteredTeam.Team, TeamLogo: filteredTeam.TeamLogo, Points: filteredTeam.Points})
 		}

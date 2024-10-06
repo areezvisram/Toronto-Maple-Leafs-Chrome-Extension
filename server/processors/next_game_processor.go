@@ -12,6 +12,10 @@ func NHLGameProcessor(body []byte) ([]byte, error) {
 	}
 
 	var filteredResponse models.FilteredResponse
+	if len(nextGameResponse.Games) == 0 {
+		filteredResponse.PreviousStartDate = nextGameResponse.PreviousStartDate
+		return json.Marshal(filteredResponse)
+	}
 	if nextGameResponse.Games[0].GameState == "OFF" {
 		filteredResponse.PreviousGame = models.FilteredPreviousGame{
 			GameDate:      nextGameResponse.Games[0].GameDate,

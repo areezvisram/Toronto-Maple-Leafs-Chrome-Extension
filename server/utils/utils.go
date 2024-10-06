@@ -3,6 +3,7 @@ package utils
 import (
 	"compress/gzip"
 	"io"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -10,6 +11,7 @@ import (
 type ResponseProcessor func([]byte) ([]byte, error)
 
 func CreateRequest(method, url string, header http.Header) (*http.Request, error) {
+	log.Println("Request made for ", url)
 	req, err := http.NewRequest(method, url, nil)
 	if err != nil {
 		return nil, err
@@ -76,6 +78,6 @@ func ReadAndProcessResponse(resp *http.Response, processor ResponseProcessor) ([
 	return processor(body)
 }
 
-func EnableCors(w *http.ResponseWriter)  {
+func EnableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 }

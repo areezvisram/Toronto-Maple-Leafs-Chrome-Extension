@@ -1,8 +1,13 @@
-<title>Toronto Maple Leafs Background Page</title>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toronto Maple Leafs Background Page</title>
   <link rel="stylesheet" href="background.css" />
   <script src="clock2.js"></script>
+  <script src="kofi.js"></script>
 </head>
 
 <body>
@@ -24,7 +29,7 @@
         <div class="season-over-words">SEASON OVER</div>
         <div class="season-over-words">STAY TUNED FOR NEXT YEAR!</div>
         <div class="season-over-words">GO LEAFS GO</div>
-        <img class="season-over-logo" src="images/teams/Toronto Maple Leafs.png" />
+        <img class="season-over-logo" src="images/Toronto Maple Leafs.png" />
       </div>
     </div>
     <div class="clock-container">
@@ -76,18 +81,26 @@
         <button class="button" type="submit">Google Search</button>
       </form>
     </div>
+
     <div class="top-scorers-container">
-      <div class="top-scorers-text">TOP SCORERS</div>
-      <div class="filter-by">FILTER BY:</div>
-      <div class="dropdown">
-        <button class="dropdown-button" id="dropdown-button">POINTS &#9660</button>
-        <div class="dropdown-content" id="dropdown-content">
-          <a id="points">POINTS</a>
-          <a id="goals">GOALS</a>
-          <a id="assists">ASSISTS</a>
-          <a id="def">DEFENSEMEN</a>
-          <a id="tend">GOALTENDERS</a>
+      <div id="top-scorers">
+        <div class="top-scorers-text">TOP SCORERS</div>
+        <div class="filter-by">FILTER BY:</div>
+        <div class="dropdown">
+          <button class="dropdown-button" id="dropdown-button">POINTS &#9660</button>
+          <div class="dropdown-content" id="dropdown-content">
+            <a id="points">POINTS</a>
+            <a id="goals">GOALS</a>
+            <a id="assists">ASSISTS</a>
+            <a id="def">DEFENSEMEN</a>
+            <a id="tend">GOALTENDERS</a>
+          </div>
         </div>
+      </div>
+      <div class="season-not-started-container" id="season-not-started">
+        <div class="season-not-started-words">STATS AVAILABLE WHEN REGULAR SEASON STARTS!</div>        
+        <!-- <div class="season-not-started-words">GO LEAFS GO</div> -->
+        <img class="season-not-started-logo" src="images/Toronto Maple Leafs.png" />
       </div>
     </div>
 
@@ -104,4 +117,51 @@
       </div>
     </div>
   </div>
+  <style>
+    .floatingchat-container-wrap {
+      position: fixed;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50%;
+    }
+
+    .floatingchat-container-wrap-mobi {
+      position: fixed;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50%;
+    }
+
+    .floating-chat-kofi-popup-iframe {
+      position: fixed;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50%;
+    }
+
+    .floating-chat-kofi-popup-iframe-mobi {
+      position: fixed;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50%;
+    }
+
+    .floating-chat-kofi-popup-iframe-closer-mobi {
+      position: fixed;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50%;
+    }
+
+    .donation-block .sqs-donate-button {
+      font-size: 500% !important;
+    }
+  </style>
 </body>
+
+</html>

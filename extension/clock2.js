@@ -28,7 +28,7 @@ window.addEventListener("load", function () {
 
     // Randomize background from 8 images
     var bg = document.getElementById("bg");
-    var random = Math.round(Math.random() * (8 - 1) + 1);
+    var random = Math.round(Math.random() * (5 - 1) + 1);
     bg.style.backgroundImage = "url('images/background" + random + ".jpg')";
 
     //=================================================================================================================
@@ -76,7 +76,7 @@ window.addEventListener("load", function () {
 
     // async function getTopScorers(stat, position)
     async function getStatsAndSchedule() {
-        const response = await fetch("http://localhost:8080/api/nhl-schedule");
+        const response = await fetch("https://tml-chrome-extension-server-401328305809.us-east1.run.app/api/nhl-schedule");
         const data = await response.json();
         nextGameData = data["nextGame"];
         previousGameData = data["previousGame"];
@@ -85,7 +85,7 @@ window.addEventListener("load", function () {
     }
 
     async function getStandings() {
-        const response = await fetch("http://localhost:8080/api/standings");
+        const response = await fetch("https://tml-chrome-extension-server-401328305809.us-east1.run.app/api/standings");
         const data = await response.json();
         divisionStandingsData = data["division"];
         conferenceStandingsData = data["conference"];
@@ -93,6 +93,13 @@ window.addEventListener("load", function () {
     }
 
     async function setStats(stat, def = false, goalie = false) {
+        console.log(playerStatsData);
+        console.log(goalieStatsData);        
+        if (playerStatsData == null & goalieStatsData == null) {
+            document.getElementById("top-scorers").style.display = "none";
+            document.getElementById("season-not-started").style.display = "block";
+            return
+        }
         let players = [];
         const container = document.querySelector('.top-scorers-container');
         const currentScorers = container.querySelectorAll('.top-scorers');
@@ -133,6 +140,10 @@ window.addEventListener("load", function () {
 
     async function setNextGame() {
         let nextGameDate = nextGameData["gameDate"];
+        if (nextGameDate == "") {
+            document.getElementById("next-game").style.display = "none";
+            document.getElementById("season-over").style.display = "block";
+        }
         document.getElementById("next-game-date").innerHTML = "DATE: " + nextGameDate;
         let nextGameAway = nextGameData["awayTeam"];
         document.getElementById("next-game-away").innerHTML = nextGameAway.toUpperCase();
@@ -142,7 +153,6 @@ window.addEventListener("load", function () {
         document.getElementById("next-away-team-logo").src = nextGameAwayLogoSrc;
         let nextGameHomeLogoSrc = nextGameData["homeTeamLogo"];
         document.getElementById("next-home-team-logo").src = nextGameHomeLogoSrc;
-
 
         // get the record of both teams from the "record" field of the league standings data
         let awayTeamRecord = leagueStandingsData.find(team => team.team === nextGameAway);

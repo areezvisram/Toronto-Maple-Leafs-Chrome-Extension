@@ -8,142 +8,45 @@ import (
 	"log"
 	"net/http"
 	"strings"
-	"sync"
+	"tml-extension-server/cache"
 	"tml-extension-server/httpclient"
 	"tml-extension-server/models"
-	"tml-extension-server/processors"
 	"tml-extension-server/utils"
 )
 
-func HandleNextGameProxy(url1, url2, url3 string, client httpclient.HttpClient) http.HandlerFunc {
+func HandleNextGameProxy() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		log.Println("Request made for NHL schedule")
 
 		utils.EnableCors(&w)
 
-		var wg sync.WaitGroup
-		responses := make(chan []byte, 3)
-		errors := make(chan error, 3)
-
-		fetchAndProcess := func(url string, processor utils.ResponseProcessor) {
-			defer wg.Done()
-
-			req, err := utils.CreateRequest(r.Method, url, r.Header)
-			if err != nil {
-				errors <- err
-				return
-			}
-
-			resp, err := client.Do(req)
-			if err != nil {
-				errors <- err
-				return
-			}
-
-			body, err := utils.ReadAndProcessResponse(resp, func(body []byte) ([]byte, error) {
-				return processor(body)
-			})
-			if err != nil {
-				errors <- err
-				return
-			}
-
-			responses <- body
-		}
-
-		wg.Add(3)
-		go fetchAndProcess(url1, processors.NHLGameProcessor)
-		go fetchAndProcess(url2, processors.PlayerStatsProcessor)
-		go fetchAndProcess(url3, processors.GoalieStatsProcessor)
-
-		wg.Wait()
-		close(responses)
-		close(errors)
-
-		if len(errors) > 0 {
-			for err := range errors {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-			}
+		cacheItem, found := cache.GetCacheItem("nhl_schedule_combined")
+		if !found {
+			http.Error(w, "Cache not found for NHL schedule", http.StatusInternalServerError)
 			return
 		}
 
-		var combinedResponse models.CombinedPlayersAndGamesResponse
-		for response := range responses {
-			var games models.FilteredResponse
-			var playerStats models.FilteredPlayerStatsResponse
-			var goalieStats models.FilteredGoalieStatsResponse
-
-			if strings.Contains(string(response), "previousGame") || strings.Contains(string(response), "nextGame") {
-				if err := json.Unmarshal(response, &games); err == nil {
-					combinedResponse.PreviousGame = games.PreviousGame
-					combinedResponse.NextGame = games.NextGame
-					combinedResponse.PreviousStartDate = games.PreviousStartDate
-				}
-
-				// Fetch previous game if required
-				if combinedResponse.PreviousGame.GameDate == "" {
-					var nextGameResponse models.NextGameResponse
-					if err := json.Unmarshal(response, &nextGameResponse); err == nil {
-						previousGame, err := getPreviousGame(client, nextGameResponse.PreviousStartDate)
-						if err != nil {
-							http.Error(w, err.Error(), http.StatusInternalServerError)
-							return
-						}
-						combinedResponse.PreviousGame = previousGame
-					}
-				}
-				continue
-			}
-
-			if strings.Contains(string(response), "playerStats") {
-				if err := json.Unmarshal(response, &playerStats); err == nil {
-					combinedResponse.PlayerStats = playerStats.PlayersStats
-					continue
-				}
-			}
-
-			if strings.Contains(string(response), "goalieStats") {
-				if err := json.Unmarshal(response, &goalieStats); err == nil {
-					combinedResponse.GoalieStats = goalieStats.GoalieStats
-					continue
-				}
-			}
-
-			log.Printf("Failed to unmarshal response: %s", string(response))
-		}
-
-		combinedResponseJSON, err := json.Marshal(combinedResponse)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
+		log.Println("Serving data from cache for schedule")
 		w.Header().Set("Content-Type", "application/json")
-		w.Write(combinedResponseJSON)
+		w.Write(cacheItem.Data)
 	}
 }
 
-func HandleStandingsProxy(url string, client httpclient.HttpClient) http.HandlerFunc {
+func HandleStandingsProxy() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		log.Println("Request made for NHL standings")
 
 		utils.EnableCors(&w)
 
-		req, err := utils.CreateRequest(r.Method, url, r.Header)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+		cacheItem, found := cache.GetCacheItem("nhl_standings")
+		if !found {
+			http.Error(w, "Cache not found for NHL standings", http.StatusInternalServerError)
 			return
 		}
 
-		resp, err := client.Do(req)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		if err := utils.CopyResponse(w, resp, processors.StandingsProcessor); err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-		}
-
+		log.Println("Serving data from cache for standings")
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(cacheItem.Data)
 	}
 }
 
@@ -187,9 +90,9 @@ func getPreviousGame(client httpclient.HttpClient, previousStartDate string) (mo
 	}
 
 	// TODO: Assuming the last game in the response is the previous game
-	// if len(previousGameResponse.Games) == 0 {
-	// 	return models.FilteredGame{}, fmt.Errorf("no previous games found")
-	// }
+	if len(previousGameResponse.Games) == 0 {
+		return models.FilteredPreviousGame{}, fmt.Errorf("no previous games found")
+	}
 
 	lastGame := previousGameResponse.Games[len(previousGameResponse.Games)-1]
 	previousGame := models.FilteredPreviousGame{

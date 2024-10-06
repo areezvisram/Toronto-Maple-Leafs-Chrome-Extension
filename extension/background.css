@@ -590,6 +590,27 @@ html {
   width: 120px;
 }
 
+.season-not-started-container {
+  display: none;
+}
+
+.season-not-started-words {
+  font-family: "quantico";
+  font-size: 30px;
+  color: #ffffff;
+  text-align: center;
+  margin-top: 15px;
+}
+
+.season-not-started-logo {
+  text-align: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: 120px;
+  width: 120px;
+}
+
 @media (max-width: 1350px) {
   .next-game-container {
     height: 385px;
